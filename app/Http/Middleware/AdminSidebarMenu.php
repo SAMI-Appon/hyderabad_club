@@ -46,11 +46,11 @@ class AdminSidebarMenu
                             );
                         }
                         if (auth()->user()->can('user.create')) {
-                            $sub->url(
-                                action('SalesCommissionAgentController@index'),
-                                __('lang_v1.sales_commission_agents'),
-                                ['icon' => 'fa fas fa-handshake', 'active' => request()->segment(1) == 'sales-commission-agents']
-                            );
+                            // $sub->url(
+                            //     action('SalesCommissionAgentController@index'),
+                            //     __('lang_v1.sales_commission_agents'),
+                            //     ['icon' => 'fa fas fa-handshake', 'active' => request()->segment(1) == 'sales-commission-agents']
+                            // );
                         }
                     },
                     ['icon' => 'fa fas fa-users']
@@ -75,18 +75,18 @@ class AdminSidebarMenu
                                 __('report.customer'),
                                 ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'customer']
                             );
-                            $sub->url(
-                                action('CustomerGroupController@index'),
-                                __('lang_v1.customer_groups'),
-                                ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'customer-group']
-                            );
+                            // $sub->url(
+                            //     action('CustomerGroupController@index'),
+                            //     __('lang_v1.customer_groups'),
+                            //     ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'customer-group']
+                            // );
                         }
                         if (auth()->user()->can('supplier.create') || auth()->user()->can('customer.create')) {
-                            $sub->url(
-                                action('ContactController@getImportContacts'),
-                                __('lang_v1.import_contacts'),
-                                ['icon' => 'fa fas fa-download', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'import']
-                            );
+                            // $sub->url(
+                            //     action('ContactController@getImportContacts'),
+                            //     __('lang_v1.import_contacts'),
+                            //     ['icon' => 'fa fas fa-download', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'import']
+                            // );
                         }
 
                         if(!empty(env('GOOGLE_MAP_API_KEY'))) {

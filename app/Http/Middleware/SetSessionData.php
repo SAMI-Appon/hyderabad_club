@@ -19,6 +19,8 @@ class SetSessionData
      */
     public function handle($request, Closure $next)
     {
+
+        
         if (!$request->session()->has('user')) {
             $business_util = new BusinessUtil;
 
@@ -32,7 +34,8 @@ class SetSessionData
                             'language' => $user->language,
                             ];
             $business = Business::findOrFail($user->business_id);
-            
+           
+
             $currency = $business->currency;
             $currency_data = ['id' => $currency->id,
                                 'code' => $currency->code,
