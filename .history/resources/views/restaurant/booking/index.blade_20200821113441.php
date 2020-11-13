@@ -15,12 +15,16 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-       <!-- <div class="col-sm-12">
+        @if(count($business_locations) > 1)
+        <div class="col-sm-12">
             <select id="business_location_id" class="select2" style="width:50%">
                 <option value="">@lang('purchase.business_location')</option>
+                @foreach( $business_locations as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                @endforeach
             </select>
-        </div> -->
-     
+        </div>
+        @endif
     </div>
     <br>
     <div class="row">
@@ -289,8 +293,6 @@
             });
         });
 
-
-     
         function getLocationTables(location_id){
             $.ajax({
                 method: "GET",
@@ -299,19 +301,6 @@
                 dataType: "html",
                 success: function(result){
                     $('div#restaurant_module_span').html(result);
-                }
-            });
-        }
-
-        function roomType(type){
-            $.ajax({
-                method: "GET",
-                url: '/modules/data/get-pos-details',
-                data: {'type': type},
-                dataType: "json",
-                success: function(result){
-                    console.warn(result);
-                   // $('div#restaurant_module_span').html(result);
                 }
             });
         }

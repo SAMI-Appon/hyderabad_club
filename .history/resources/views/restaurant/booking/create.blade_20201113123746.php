@@ -1,3 +1,6 @@
+<style>
+	.select2.select2-container.select2-container--default{width: 100%;}
+</style>
 <div class="modal fade" id="add_booking_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -15,18 +18,20 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control w-100" id=room_type>
-								<option value="">Select Type</option>
-								<option value="room">Room</option>
-								<option value="hall">Hall</option>
-							</select>
+                            <div class="input-group">
+                                <select class="form-control w-100">
+                                    <option value="">@lang('purchase.business_location')</option>
+                                </select>
+                            </div>
                         </div>
 					</div>
 					<div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control w-100">
-								<option value="">@lang('purchase.business_location')</option>
-							</select>
+                            <div class="input-group">
+                                <select class="form-control w-100">
+                                    <option value="">@lang('purchase.business_location')</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>

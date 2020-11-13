@@ -99,7 +99,7 @@ class BookingController extends Controller
             return $events;
         }
 
-      //  $business_locations = BusinessLocation::forDropdown($business_id);
+        $business_locations = BusinessLocation::forDropdown($business_id);
 
         $customers =  Contact::customersDropdown($business_id, false);
 
@@ -108,7 +108,7 @@ class BookingController extends Controller
         $types = Contact::getContactTypes();
         $customer_groups = CustomerGroup::forDropdown($business_id);
 
-        return view('restaurant.booking.index', compact('customers', 'correspondents', 'types', 'customer_groups'));
+        return view('restaurant.booking.index', compact('business_locations', 'customers', 'correspondents', 'types', 'customer_groups'));
     }
 
     /**

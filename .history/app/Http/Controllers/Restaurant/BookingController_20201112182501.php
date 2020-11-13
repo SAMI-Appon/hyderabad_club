@@ -7,6 +7,7 @@ use App\Contact;
 use App\CustomerGroup;
 use App\Restaurant\Booking;
 use App\User;
+use App\Brands;
 use App\Utils\Util;
 use DB;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class BookingController extends Controller
      */
     public function index()
     {
+        
         if (!auth()->user()->can('crud_all_bookings') && !auth()->user()->can('crud_own_bookings')) {
             abort(403, 'Unauthorized action.');
         }
@@ -99,7 +101,10 @@ class BookingController extends Controller
             return $events;
         }
 
-      //  $business_locations = BusinessLocation::forDropdown($business_id);
+        $business_locations = Brands::where('business_id', 1)
+        ->pluck('name', 'id');
+print_r($business_locations);
+    die();
 
         $customers =  Contact::customersDropdown($business_id, false);
 
@@ -108,7 +113,7 @@ class BookingController extends Controller
         $types = Contact::getContactTypes();
         $customer_groups = CustomerGroup::forDropdown($business_id);
 
-        return view('restaurant.booking.index', compact('customers', 'correspondents', 'types', 'customer_groups'));
+        return view('restaurant.booking.index', compact('business_locations', 'customers', 'correspondents', 'types', 'customer_groups'));
     }
 
     /**

@@ -15,18 +15,20 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control w-100" id=room_type>
-								<option value="">Select Type</option>
-								<option value="room">Room</option>
-								<option value="hall">Hall</option>
-							</select>
+                            <div class="input-group">
+                                <select class="form-control w-100">
+                                    <option value="">@lang('purchase.business_location')</option>
+                                </select>
+                            </div>
                         </div>
 					</div>
 					<div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control w-100">
-								<option value="">@lang('purchase.business_location')</option>
-							</select>
+                            <div class="input-group">
+                                <select class="form-control w-100">
+                                    <option value="">@lang('purchase.business_location')</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>

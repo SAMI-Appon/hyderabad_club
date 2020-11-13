@@ -308,7 +308,7 @@
                 method: "GET",
                 url: '/modules/data/get-pos-details',
                 data: {'type': type},
-                dataType: "json",
+                dataType: "html",
                 success: function(result){
                     console.warn(result);
                    // $('div#restaurant_module_span').html(result);

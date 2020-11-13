@@ -289,8 +289,6 @@
             });
         });
 
-
-     
         function getLocationTables(location_id){
             $.ajax({
                 method: "GET",
@@ -299,19 +297,6 @@
                 dataType: "html",
                 success: function(result){
                     $('div#restaurant_module_span').html(result);
-                }
-            });
-        }
-
-        function roomType(type){
-            $.ajax({
-                method: "GET",
-                url: '/modules/data/get-pos-details',
-                data: {'type': type},
-                dataType: "json",
-                success: function(result){
-                    console.warn(result);
-                   // $('div#restaurant_module_span').html(result);
                 }
             });
         }
