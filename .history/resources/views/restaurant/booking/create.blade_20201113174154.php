@@ -13,7 +13,7 @@
             <div class="modal-body">
 
                 <div class="row">
-					
+
                     <div class="col-sm-6">
                         <div class="form-group">
 							<select class="form-control" onchange="roomType(this.value)" required>
@@ -29,7 +29,8 @@
 								<option value="">Select Room & Hall</option>
 							</select>
                         </div>
-                    </div>
+					</div>
+					
                     <div class="clearfix"></div>
                     <div class="col-sm-6">
                         <div class="form-group">

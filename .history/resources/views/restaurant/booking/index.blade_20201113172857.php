@@ -334,12 +334,12 @@ function roomType(type) {
         },
         dataType: "json",
         success: function(result) {
-            var toAppend = '<option value="">Select Room & Hall</option>';
-            $.each(result.data, function(i, o) {
-                toAppend += '<option value="'+i+'">' + o + '</option>';
+            var toAppend = '';
+            $.each(data, function(i, o) {
+                toAppend += '<option>' + o + '</option>';
             });
 
-            $('#getRooms').html(toAppend);
+            $('#getRooms').append(toAppend);
         }
     });
 }

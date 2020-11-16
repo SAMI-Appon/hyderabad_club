@@ -133,8 +133,8 @@ class BookingController extends Controller
     public function getRooms(Request $request)
     {
         return response()->json([
-            'status' => 'success',
-            'data' =>  Rooms::forDropdown($request->type),
+            'success' => 'success',
+            'redirect' =>  Rooms::forDropdown($request->type),
         ]);
     }
 

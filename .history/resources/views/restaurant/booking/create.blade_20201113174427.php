@@ -25,7 +25,7 @@
 					</div>
 					<div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control" id="getRooms" required>
+							<select class="form-control select2" id="getRooms" required>
 								<option value="">Select Room & Hall</option>
 							</select>
                         </div>

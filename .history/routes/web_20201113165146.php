@@ -327,7 +327,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
 
     Route::get('bookings/get-todays-bookings', 'Restaurant\BookingController@getTodaysBookings');
     Route::resource('bookings', 'Restaurant\BookingController');
-    Route::get('get-rooms', 'Restaurant\BookingController@getRooms')->name('get_rooms');
+    Route::get('get-rooms', 'Restaurant\BookingController@getRooms');
 
     Route::resource('types-of-service', 'TypesOfServiceController');
     Route::get('sells/edit-shipping/{id}', 'SellController@editShipping');

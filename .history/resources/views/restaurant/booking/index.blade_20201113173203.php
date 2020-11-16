@@ -334,7 +334,7 @@ function roomType(type) {
         },
         dataType: "json",
         success: function(result) {
-            var toAppend = '<option value="">Select Room & Hall</option>';
+            var toAppend = '<option value="">Select Rooms</option>';
             $.each(result.data, function(i, o) {
                 toAppend += '<option value="'+i+'">' + o + '</option>';
             });

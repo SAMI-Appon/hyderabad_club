@@ -13,10 +13,9 @@
             <div class="modal-body">
 
                 <div class="row">
-					
                     <div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control" onchange="roomType(this.value)" required>
+							<select class="form-control w-100" onchange="roomType(this.value)">
 								<option value="">Select Type</option>
 								<option value="room">Room</option>
 								<option value="hall">Hall</option>
@@ -25,7 +24,7 @@
 					</div>
 					<div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control" id="getRooms" required>
+							<select class="form-control w-100" id="getRooms" >
 								<option value="">Select Room & Hall</option>
 							</select>
                         </div>
@@ -55,8 +54,8 @@
                                     <i class="fa fa-user"></i>
                                 </span>
                                 {!! Form::select('correspondent',
-                                $correspondents, null, ['class' => 'form-control','id' => 'correspondent', 'placeholder' =>
-                                __('restaurant.select_correspondent'),'required']); !!}
+                                $correspondents, null, ['class' => 'form-control', 'placeholder' =>
+                                __('restaurant.select_correspondent'), 'id' => 'correspondent']); !!}
                             </div>
                         </div>
                     </div>

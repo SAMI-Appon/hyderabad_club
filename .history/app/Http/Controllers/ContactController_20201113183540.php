@@ -583,7 +583,7 @@ class ContactController extends Controller
                                 ->where('contact_id', $input['contact_id'])
                                 ->count();
             }
-            // dd($count);          
+            dd($count);          
             if ($count == 0) {
                 //Update reference count
                 $ref_count = $this->commonUtil->setAndGetReferenceCount('contacts');

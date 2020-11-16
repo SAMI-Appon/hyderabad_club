@@ -13,7 +13,6 @@
             <div class="modal-body">
 
                 <div class="row">
-					
                     <div class="col-sm-6">
                         <div class="form-group">
 							<select class="form-control" onchange="roomType(this.value)" required>
@@ -55,8 +54,8 @@
                                     <i class="fa fa-user"></i>
                                 </span>
                                 {!! Form::select('correspondent',
-                                $correspondents, null, ['class' => 'form-control','id' => 'correspondent', 'placeholder' =>
-                                __('restaurant.select_correspondent'),'required']); !!}
+                                $correspondents, null, ['class' => 'form-control', 'placeholder' =>
+                                __('restaurant.select_correspondent'), 'required' 'id' => 'correspondent']); !!}
                             </div>
                         </div>
                     </div>

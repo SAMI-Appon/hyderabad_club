@@ -8,7 +8,6 @@ use App\CustomerGroup;
 use App\Restaurant\Booking;
 use App\User;
 use App\Utils\Util;
-use App\Rooms;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -133,8 +132,8 @@ class BookingController extends Controller
     public function getRooms(Request $request)
     {
         return response()->json([
-            'status' => 'success',
-            'data' =>  Rooms::forDropdown($request->type),
+            'success' => 'success',
+            'redirect' => $request->type,
         ]);
     }
 

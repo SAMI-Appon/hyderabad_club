@@ -534,10 +534,10 @@ class ContactController extends Controller
 
                 $contact = Contact::create($input);
 
-                // $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
-                // $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
+                $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
+                $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
 
-                // Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
+                Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
 
                 $output = [ 'success' => true,
                             'data' => $contact,
@@ -570,7 +570,7 @@ class ContactController extends Controller
             if (!empty($input['dob'])) {
                 $input['dob'] = $this->commonUtil->uf_date($input['dob']);
             }
-           
+            dd($input);
             $input['business_id'] = $business_id;
             $input['created_by'] = $request->session()->get('user.id');
 
@@ -583,7 +583,7 @@ class ContactController extends Controller
                                 ->where('contact_id', $input['contact_id'])
                                 ->count();
             }
-            // dd($count);          
+          
             if ($count == 0) {
                 //Update reference count
                 $ref_count = $this->commonUtil->setAndGetReferenceCount('contacts');
@@ -593,13 +593,13 @@ class ContactController extends Controller
                     $input['contact_id'] = $this->commonUtil->generateReferenceNumber('contacts', $ref_count);
                 }
 
-               
+
                 $contact = Contact::create($input);
 
-                // $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
-                // $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
+                $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
+                $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
 
-                // Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
+                Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
                 
                 // Contact::update(['qr_code' => $qr_code])->where('id',$contact->id);
 
