@@ -55,7 +55,7 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { 
         $type = request()->get('type');
 
         $types = ['supplier', 'customer'];
@@ -249,7 +249,7 @@ class ContactController extends Controller
         if (!auth()->user()->can('customer.view')) {
             abort(403, 'Unauthorized action.');
         }
-
+        
         $business_id = request()->session()->get('user.business_id');
 
         $query = Contact::leftjoin('transactions AS t', 'contacts.id', '=', 't.contact_id')
@@ -474,7 +474,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {    
-
+      // dd($request);
 
         // \App\Helpers\CommonHelpers::uploadSingleFile($val, 'upload/documents/', 'png,gif,csv,jpeg,pdf,xls,xlsx,doc,docx,jpg');
 
@@ -498,9 +498,9 @@ class ContactController extends Controller
             }
 
             if(@$request->is_family_member){
-                // dd('hi');
+              //   dd('hi');
                 $input = $request->only([
-                'prefix', 'first_name', 'middle_name', 'last_name', 'mobile','customer_group_id', 'marital_status' ,  'email','dob','contact_id','relationship']);
+               'type', 'prefix', 'first_name', 'middle_name', 'last_name', 'mobile','customer_group_id', 'marital_status' ,  'email','contact_id','dob','relationship']);
                 if(@$request->is_edit>0){
                    
                     unset($input['customer_group_id']);
@@ -667,7 +667,7 @@ class ContactController extends Controller
      */
     public function edit($id)
     {    
-    
+       // dd($id);
         if (!auth()->user()->can('supplier.update') && !auth()->user()->can('customer.update')) {
             abort(403, 'Unauthorized action.');
         }
@@ -710,8 +710,14 @@ class ContactController extends Controller
             // dd($contact);
             if($contact->relationship!='parent' &&  !empty($contact->relationship)){
                 // dd($contact);
-                return view('contact.create_cus_family')
-                ->with(compact('contact'));
+                $data = array(
+                    'title' => 'Add Family Member',
+                    'is_edit' => 1,
+                    'contact'  => Contact::where('business_id', $business_id)->find($id),
+                );
+                return view('contact.create_cus_family')->with($data);
+                // return view('contact.create_cus_family')
+                // ->with(compact('contact'));
             }
             return view('contact.edit')
                 ->with(compact('contact', 'types', 'customer_groups', 'opening_balance'));
@@ -726,13 +732,13 @@ class ContactController extends Controller
         if (request()->ajax()) {
 
             $business_id = request()->session()->get('user.business_id');
-            $contact = Contact::where('business_id', $business_id)->find($id);
-
-            if (!$this->moduleUtil->isSubscribed($business_id)) {
+            
+           
+            if (!$this->moduleUtil->isSubscribed($business_id)) { 
                 return $this->moduleUtil->expiredResponse();
             }
 
-           
+            
 
 
             // $ob_transaction =  Transaction::where('contact_id', $id)
@@ -749,9 +755,13 @@ class ContactController extends Controller
 
             //     $opening_balance = $this->commonUtil->num_f($opening_balance);
             // }
-            // dd($contact);
-            return view('contact.create_cus_family')
-                ->with(compact('contact'));
+           //  dd($contact);
+            $data = array(
+                'title' => 'Add Family Member',
+                'is_edit' => 0,
+                'contact1'  => Contact::where('business_id', $business_id)->find($id),
+            );
+            return view('contact.create_cus_family')->with($data);
         }
     }
 
