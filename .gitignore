@@ -24,3 +24,4 @@ npm-debug.log
 /public/modules/
 /public/mix-manifest.json
 /_Modules
+/.history
