@@ -83,7 +83,7 @@ if($is_edit){
                         <i class="fa fa-id-badge"></i>
                     </span>
                     <select name="relationship" class="form-control">
-                        <option value='wife' <?=(@$contact->relationship=='wife') ? 'selected' : ''?>>Wife</option>
+                        <option value='spouse' <?=(@$contact->relationship=='spouse') ? 'selected' : ''?>>Spouse</option>
                         <option value='son'  <?=(@$contact->relationship=='son') ? 'selected' : ''?>>Son</option>
                         <option value='daughter' <?=(@$contact->relationship=='daughter') ? 'selected' : ''?>>Daughter</option>
                     </select>
