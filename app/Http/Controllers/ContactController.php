@@ -79,7 +79,19 @@ class ContactController extends Controller
         return view('contact.index')
             ->with(compact('type', 'reward_enabled'));
     }
-
+    public function customer_show()
+    {
+        $data = array('title' => 'View Customer');
+        return view('contact.customer_show')->with($data);
+    }
+    public function search_customer()
+    {
+        $data = array(
+            'title' => 'Search Customer',
+            'users' => Contact::get(),
+        );
+        return view('contact.search_customer')->with($data);
+    }
     /**
      * Returns the database object for supplier
      *
@@ -637,7 +649,7 @@ class ContactController extends Controller
         if (!auth()->user()->can('supplier.view') && !auth()->user()->can('customer.view')) {
             abort(403, 'Unauthorized action.');
         }
-
+        // dd($id);
         $business_id = request()->session()->get('user.business_id');
         $contact = $this->contactUtil->getContactInfo($business_id, $id);
 
