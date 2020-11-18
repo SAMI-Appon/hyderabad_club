@@ -21,14 +21,14 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js?v=$asset_v"></script>
 <![endif]-->
 <script src="{{ asset('js/vendor.js?v=' . $asset_v) }}"></script>
-   <!-- $business_date_format = session('business.date_format', config('constants.default_date_format')); -->
+
 @if(file_exists(public_path('js/lang/' . session()->get('user.language', config('app.locale')) . '.js')))
     <script src="{{ asset('js/lang/' . session()->get('user.language', config('app.locale') ) . '.js?v=' . $asset_v) }}"></script>
 @else
     <script src="{{ asset('js/lang/en.js?v=' . $asset_v) }}"></script>
 @endif
 @php
- 
+    <!-- $business_date_format = session('business.date_format', config('constants.default_date_format')); -->
     $business_date_format = "m/d/Y";
     $datepicker_date_format = str_replace('d', 'dd', $business_date_format);
     $datepicker_date_format = str_replace('m', 'mm', $datepicker_date_format);

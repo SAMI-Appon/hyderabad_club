@@ -265,10 +265,7 @@ $(document).ready(function() {
             {
                 data: 'amount'
             },
-        ],
-        fnDrawCallback: function(oSettings) {
-                __currency_convert_recursively($('#todays_bookings_table'));
-            }
+        ]
     });
     $('button#add_new_booking_btn').click(function() {
         $('div#add_booking_modal').modal('show');

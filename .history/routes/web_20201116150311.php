@@ -63,8 +63,6 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::post('/contacts/check-contact-id', 'ContactController@checkContactId');
     Route::get('/contacts/customers', 'ContactController@getCustomers');
     Route::get('/contacts/show_add_family/{id}', 'ContactController@show_add_family');
-    Route::get('/contacts/customer_show', 'ContactController@customer_show');
-    Route::get('/contacts/search_customer', 'ContactController@search_customer');
 
     Route::resource('contacts', 'ContactController');
 

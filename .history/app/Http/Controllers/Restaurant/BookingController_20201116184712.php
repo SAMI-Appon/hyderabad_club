@@ -188,6 +188,7 @@ class BookingController extends Controller
                 $booking_start = $this->commonUtil->uf_date($input['booking_start'], true);
                 $booking_end = $this->commonUtil->uf_date($input['booking_end'], true);
                 $date_range = [$booking_start, $booking_end];
+                echo date("jS F, Y", strtotime($input['booking_start'])); die();
                 //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
                     ->where(function ($q) use ($date_range) {

@@ -37,9 +37,9 @@
                                 <th>@lang('contact.customer')</th>
                                 <th>@lang('restaurant.booking_starts')</th>
                                 <th>@lang('restaurant.booking_ends')</th>
-                                <th>Room name</th>
-                                <th>Room Type</th>
-                                <th>Amount</th>
+                                <th>@lang('restaurant.table')</th>
+                                <th>@lang('messages.location')</th>
+                                <th>@lang('restaurant.service_staff')</th>
                             </tr>
                         </thead>
                     </table>
@@ -148,13 +148,13 @@ $(document).ready(function() {
 
     $('#add_booking_modal').on('shown.bs.modal', function(e) {
         getLocationTables($('select#booking_location_id').val());
-        $(this).find('select').each(function() {
-            if (!($(this).hasClass('select2'))) {
-                $(this).select2({
-                    dropdownParent: $('#add_booking_modal')
-                });
-            }
-        });
+        // $(this).find('select').each(function() {
+        //     if (!($(this).hasClass('select2'))) {
+        //         $(this).select2({
+        //             dropdownParent: $('#add_booking_modal')
+        //         });
+        //     }
+        // });
         booking_form_validator = $('form#add_booking_form').validate({
             submitHandler: function(form) {
                 $(form).find('button[type="submit"]').attr('disabled', true);
@@ -257,18 +257,15 @@ $(document).ready(function() {
                 name: 'booking_end'
             },
             {
-                data: 'rooms.name'
+                data: 'table'
             },
             {
-                data: 'type'
+                data: 'location'
             },
             {
-                data: 'amount'
+                data: 'waiter'
             },
-        ],
-        fnDrawCallback: function(oSettings) {
-                __currency_convert_recursively($('#todays_bookings_table'));
-            }
+        ]
     });
     $('button#add_new_booking_btn').click(function() {
         $('div#add_booking_modal').modal('show');
@@ -343,26 +340,6 @@ function roomType(type) {
             });
 
             $('#getRooms').html(toAppend);
-        }
-    });
-}
-
-
-function selectCustomer(id) {
-    $.ajax({
-        method: "GET",
-        url: "{{ route('get_members') }}",
-        data: {
-            'id': id
-        },
-        dataType: "json",
-        success: function(result) {
-            var toAppend = '<option value="">Select Family Member</option>';
-            $.each(result.data, function(i, o) {
-                toAppend += '<option value="'+i+'">' + o + '</option>';
-            });
-
-            $('#getMembers').html(toAppend);
         }
     });
 }

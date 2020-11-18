@@ -37,9 +37,9 @@
                                 <th>@lang('contact.customer')</th>
                                 <th>@lang('restaurant.booking_starts')</th>
                                 <th>@lang('restaurant.booking_ends')</th>
-                                <th>Room name</th>
-                                <th>Room Type</th>
-                                <th>Amount</th>
+                                <th>@lang('restaurant.table')</th>
+                                <th>@lang('messages.location')</th>
+                                <th>@lang('restaurant.service_staff')</th>
                             </tr>
                         </thead>
                     </table>
@@ -263,12 +263,9 @@ $(document).ready(function() {
                 data: 'type'
             },
             {
-                data: 'amount'
+                data: 'rooms.fee'
             },
-        ],
-        fnDrawCallback: function(oSettings) {
-                __currency_convert_recursively($('#todays_bookings_table'));
-            }
+        ]
     });
     $('button#add_new_booking_btn').click(function() {
         $('div#add_booking_modal').modal('show');
