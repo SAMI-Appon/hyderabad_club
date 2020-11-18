@@ -79,9 +79,13 @@ class ContactController extends Controller
         return view('contact.index')
             ->with(compact('type', 'reward_enabled'));
     }
-    public function customer_show()
-    {
-        $data = array('title' => 'View Customer');
+    public function customer_show(request $request)
+    {   
+        $data = array(
+            'title' => 'View Customer',
+            'customer_data' => Contact::where('contact_id',$request->cus_id)->get(), 
+        );
+       // dd($data['customer_data']);
         return view('contact.customer_show')->with($data);
     }
     public function search_customer()

@@ -32,46 +32,49 @@
             <div class="box box-solid">
                 <div class="box-body">
                 	<div class="row">
-                   <div class="col-md-4">
-                   	<img src="https://dummyimage.com/600x400/000/fff" style="width: 100%;">
-                   </div>
-                <div class="col-md-4" style="    padding-left: 60px;">
-            <!-- <strong>Mr Dani  Khan</strong><br><br> -->
-					<h3 class="profile-username">
+                	@foreach($customer_data as $value)
+                	@if($value->relationship == 'parent')	
+	                   <div class="col-md-4"> 
+	                   	<img src="{{ asset('') }}/{{$value->image}}" style="width: 100%;">
+	                   </div>
+                		<div class="col-md-4" style="    padding-left: 60px;">
+            		<h3 class="profile-username">
 					    <i class="fas fa-user-tie"></i>
-					    Mr Dani  Khan
-					    <small>
-					                    Customer
-					            </small>
+					    {{ $value->name }} <small>Customer</small>
 					</h3><br>
-					<strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
-					<p class="text-muted">
-					    tee st, xzcxcxzcxc
-					</p>
-					    <strong><i class="fa fa-briefcase margin-r-5"></i> 
+					<strong><i class="fa fa-calendar margin-r-5"></i> Date of birth</strong>
+					    <p class="text-muted">
+					        {{ $value->dob }}
+					    </p>
+					<strong><i class="fa fa-briefcase margin-r-5"></i> 
 					    Business Name</strong>
 					    <p class="text-muted">
-					        test
+					        {{ $value->supplier_business_name }}
 					    </p>
-
-					<strong><i class="fa fa-mobile margin-r-5"></i> Mobile</strong>
+					<strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
 					<p class="text-muted">
-					    8451651
+					    {{ $value->address_line_1 }}
+					</p>
+					    
+
+					
+					    
+                </div>
+                <div class="col-md-4" style="margin-top: 55px;">
+                	<strong><i class="fa fa-mobile margin-r-5"></i> Mobile</strong>
+					<p class="text-muted">
+					    {{ $value->mobile }}
 					</p>
 					    <strong><i class="fa fa-phone margin-r-5"></i> Landline</strong>
 					    <p class="text-muted">
-					        234234234
+					        {{ $value->landline }}
 					    </p>
 					    <strong><i class="fa fa-phone margin-r-5"></i> Alternate contact number</strong>
 					    <p class="text-muted">
-					        234234
-					    </p>
-					    <strong><i class="fa fa-calendar margin-r-5"></i> Date of birth</strong>
-					    <p class="text-muted">
-					        16/11/2020
+					        {{ $value->alternate_number }}
 					    </p>
                 </div>
-                   <!-- <div class="col-md-4" style="    padding-left: 60px;">
+                      <!-- <div class="col-md-4" style="    margin-top: 55px;">
             	<strong>Total Sale</strong>
 				<p class="text-muted">
 				<span class="display_currency" data-currency_symbol="true">₨ 0.00</span>
@@ -93,51 +96,20 @@
 				<span class="display_currency" data-currency_symbol="true">₨ 10,000.00</span>
 				</p>
 				    </div> -->
-                      <div class="col-md-4" style="    margin-top: 55px;">
-            	<strong>Total Sale</strong>
-				<p class="text-muted">
-				<span class="display_currency" data-currency_symbol="true">₨ 0.00</span>
-				</p>
-				<strong>Total Sale Payment</strong>
-				<p class="text-muted">
-				<span class="display_currency" data-currency_symbol="true">₨ 0.00</span>
-				</p>
-				<strong>Total Sale Due</strong>
-				<p class="text-muted">
-				<span class="display_currency" data-currency_symbol="true">₨ 0.00</span>
-				</p>
-				<strong>Opening Balance</strong>
-				<p class="text-muted">
-				<span class="display_currency" data-currency_symbol="true">₨ 10,000.00</span>
-				</p>
-				<strong>Opening Balance Due</strong>
-				<p class="text-muted">
-				<span class="display_currency" data-currency_symbol="true">₨ 10,000.00</span>
-				</p>
-				    </div>
+				@endif    
+				@endforeach    
                 </div>
 
-                <div class="row" style="margin-top: 30px;">
+                <div class="row" style="margin-top: 30px;"> 
+                @foreach($customer_data as $val)	
+                @if($val->relationship != 'parent')
                 	<div class="col-md-3 text-center">
-                		<img src="https://dummyimage.com/600x400/000/fff" style="width: 80%;">
-                		<h3>Alex</h3>
-                		<p>Relation: SON</p>
+                		<img src="{{ asset('') }}/{{$val->image}}" style="width: 80%;">
+                		<h5>{{ $val->name }}</h5>
+                		<p>Relation: {{ $val->relationship }}</p>
                 	</div>
-                	<div class="col-md-3 text-center">
-                		<img src="https://dummyimage.com/600x400/000/fff" style="width: 80%;">
-                		<h3>Alex</h3>
-                		<p>Relation: SON</p>
-                	</div>
-                	<div class="col-md-3 text-center">
-                		<img src="https://dummyimage.com/600x400/000/fff" style="width: 80%;">
-                		<h3>Alex</h3>
-                		<p>Relation: SON</p>
-                	</div>
-                	<div class="col-md-3 text-center">
-                		<img src="https://dummyimage.com/600x400/000/fff" style="width: 80%;">
-                		<h3>Alex</h3>
-                		<p>Relation: SON</p>
-                	</div>
+				@endif	
+                @endforeach	
                 </div>
 
 
