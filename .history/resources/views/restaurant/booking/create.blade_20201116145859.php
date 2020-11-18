@@ -16,7 +16,7 @@
 					
                     <div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control" onchange="roomType(this.value)" name="room_type" required>
+							<select class="form-control" onchange="roomType(this.value)" required>
 								<option value="">Select Type</option>
 								<option value="room">Room</option>
 								<option value="hall">Hall</option>
@@ -25,7 +25,7 @@
 					</div>
 					<div class="col-sm-6">
                         <div class="form-group">
-							<select class="form-control" id="getRooms" name="room_id" required>
+							<select class="form-control" id="getRooms" required>
 								<option value="">Select Room & Hall</option>
 							</select>
                         </div>
@@ -39,7 +39,7 @@
                                 </span>
                                 {!! Form::select('contact_id',
                                 $customers, null, ['class' => 'form-control', 'id' => 'booking_customer_id', 
-                                'onchange' => 'selectCustomer(this.value)','placeholder' => __('contact.customer'), 'required']); !!}
+                                array('onchange' => 'selectCustomer(this.value)'),'placeholder' => __('contact.customer'), 'required']); !!}
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default bg-white btn-flat add_new_customer"
                                         data-name="" @if(!auth()->user()->can('customer.create')) disabled @endif><i
@@ -54,10 +54,9 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-user"></i>
                                 </span>
-                                <select class="form-control" id="getMembers" name="correspondent" required>
+                                <select class="form-control" id="getMembers" required>
 								<option value="">Select Family Member</option>
-                            </select>
-                            
+							</select>
                             </div>
                         </div>
                     </div>

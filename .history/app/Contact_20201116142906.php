@@ -144,7 +144,7 @@ class Contact extends Authenticatable
      *
      * @return array users
      */
-    public static function customersDropdown($business_id, $prepend_none = true, $append_id = true,$active= false,$parent_customer = false,$customerMemberGetId = 0)
+    public static function customersDropdown($business_id, $prepend_none = true, $append_id = true,$active= false,$parent_customer=false)
     {
         $all_contacts = Contact::where('business_id', $business_id)
                         ->whereIn('type', ['customer', 'both'])
@@ -153,9 +153,6 @@ class Contact extends Authenticatable
                         })
                         ->when($parent_customer, function($all_contacts) {
                             return $all_contacts->where('customer_group_id', null);
-                        })
-                        ->when($customerMemberGetId != 0, function($all_contacts) use($customerMemberGetId) {
-                            return $all_contacts->where('customer_group_id', $customerMemberGetId);
                         })
                         ->active();
 

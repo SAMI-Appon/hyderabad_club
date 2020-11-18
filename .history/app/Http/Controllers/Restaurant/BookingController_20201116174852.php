@@ -188,6 +188,7 @@ class BookingController extends Controller
                 $booking_start = $this->commonUtil->uf_date($input['booking_start'], true);
                 $booking_end = $this->commonUtil->uf_date($input['booking_end'], true);
                 $date_range = [$booking_start, $booking_end];
+
                 //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
                     ->where(function ($q) use ($date_range) {
@@ -432,14 +433,9 @@ class BookingController extends Controller
                     return $this->commonUtil->format_date($row->booking_end, true);
                 })
                 ->editColumn('amount', function ($row) {
-                    return '<span class="display_currency payment_due" data-currency_symbol="true" data-orig-value="' . $row->rooms->fee . '">' . $row->rooms->fee . '</span>';
-                })
-                ->editColumn('type', function ($row) {
-                    return ($row->type == 'room')? 'Room': 'Hall';
-
+                    return '<span class="display_currency payment_due" data-currency_symbol="true" data-orig-value="' . $row->fee . '">' . $row->fee . '</span>';
                 })
                 ->removeColumn('id')
-                ->rawColumns(['amount'])
                 ->make(true);
         }
     }

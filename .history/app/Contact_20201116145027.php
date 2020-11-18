@@ -154,7 +154,7 @@ class Contact extends Authenticatable
                         ->when($parent_customer, function($all_contacts) {
                             return $all_contacts->where('customer_group_id', null);
                         })
-                        ->when($customerMemberGetId != 0, function($all_contacts) use($customerMemberGetId) {
+                        ->when($customerMemberGetId, function($all_contacts) {
                             return $all_contacts->where('customer_group_id', $customerMemberGetId);
                         })
                         ->active();

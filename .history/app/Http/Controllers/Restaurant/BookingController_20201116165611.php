@@ -188,6 +188,7 @@ class BookingController extends Controller
                 $booking_start = $this->commonUtil->uf_date($input['booking_start'], true);
                 $booking_end = $this->commonUtil->uf_date($input['booking_end'], true);
                 $date_range = [$booking_start, $booking_end];
+
                 //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
                     ->where(function ($q) use ($date_range) {
@@ -401,7 +402,7 @@ class BookingController extends Controller
             $query = Booking::where('business_id', $business_id)
                 ->where('booking_status', 'booked')
                 ->whereDate('booking_start', $today)
-                ->with(['customer', 'correspondent','rooms']);
+                ->with(['table', 'customer', 'correspondent', 'waiter', 'location']);
 
             // if (!empty(request()->location_id)) {
             //     $query->where('location_id', request()->location_id);
@@ -417,6 +418,9 @@ class BookingController extends Controller
             }
 
             return Datatables::of($query)
+                ->editColumn('table', function ($row) {
+                    return !empty($row->table->name) ? $row->table->name : '--';
+                })
                 ->editColumn('customer', function ($row) {
                     return !empty($row->customer->name) ? $row->customer->name : '--';
                 })
@@ -425,21 +429,21 @@ class BookingController extends Controller
                         ? $row->correspondent->user_full_name
                         : '--';
                 })
+                ->editColumn('waiter', function ($row) {
+                    return !empty($row->waiter->user_full_name)
+                        ? $row->waiter->user_full_name
+                        : '--';
+                })
+                ->editColumn('location', function ($row) {
+                    return !empty($row->location->name) ? $row->location->name : '--';
+                })
                 ->editColumn('booking_start', function ($row) {
                     return $this->commonUtil->format_date($row->booking_start, true);
                 })
                 ->editColumn('booking_end', function ($row) {
                     return $this->commonUtil->format_date($row->booking_end, true);
                 })
-                ->editColumn('amount', function ($row) {
-                    return '<span class="display_currency payment_due" data-currency_symbol="true" data-orig-value="' . $row->rooms->fee . '">' . $row->rooms->fee . '</span>';
-                })
-                ->editColumn('type', function ($row) {
-                    return ($row->type == 'room')? 'Room': 'Hall';
-
-                })
                 ->removeColumn('id')
-                ->rawColumns(['amount'])
                 ->make(true);
         }
     }

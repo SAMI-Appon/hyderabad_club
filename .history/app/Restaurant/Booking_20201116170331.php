@@ -28,11 +28,6 @@ class Booking extends Model
         return $this->belongsTo(\App\Contact::class, 'correspondent_id');
     }
 
-    public function rooms()
-    {
-        return $this->belongsTo(\App\Rooms::class, 'room_id');
-    }
-
     public function waiter()
     {
         return $this->belongsTo(\App\User::class, 'waiter_id');

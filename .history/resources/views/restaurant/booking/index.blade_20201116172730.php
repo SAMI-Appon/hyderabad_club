@@ -263,12 +263,9 @@ $(document).ready(function() {
                 data: 'type'
             },
             {
-                data: 'amount'
+                data: 'rooms.fee'
             },
-        ],
-        fnDrawCallback: function(oSettings) {
-                __currency_convert_recursively($('#todays_bookings_table'));
-            }
+        ]
     });
     $('button#add_new_booking_btn').click(function() {
         $('div#add_booking_modal').modal('show');
