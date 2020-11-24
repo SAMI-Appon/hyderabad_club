@@ -23,6 +23,7 @@ class AdminSidebarMenu
 
         Menu::create('admin-sidebar-menu', function ($menu) {
             $enabled_modules = !empty(session('business.enabled_modules')) ? session('business.enabled_modules') : [];
+            // dd($enabled_modules);
             //Home
             $menu->url(action('HomeController@index'), __('home.home'), ['icon' => 'fa fas fa-tachometer-alt', 'active' => request()->segment(1) == 'home'])->order(5);
 
@@ -595,10 +596,18 @@ class AdminSidebarMenu
                 $menu->url(action('Restaurant\BookingController@index'), __('restaurant.bookings'), ['icon' => 'fas fa fa-calendar-check', 'active' => request()->segment(1) == 'bookings'])->order(65);
             }
 
+            // $menu->url(action('Restaurant\BookingController@index'), __('restaurant.bookings'), ['icon' => 'fas fa fa-calendar-check', 'active' => request()->segment(1) == 'bookings'])->order(65);
+            
+
             //Kitchen menu
             if (in_array('kitchen', $enabled_modules)) {
                 $menu->url(action('Restaurant\KitchenController@index'), __('restaurant.kitchen'), ['icon' => 'fa fas fa-fire', 'active' => request()->segment(1) == 'modules' && request()->segment(2) == 'kitchen'])->order(70);
             }
+
+
+            $menu->url(('contacts/search_customer'),'Search Customer', ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'modules'])->order(72);
+            // $menu->url(('bookings'),'Bookings', ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'modules'])->order(73);
+
 
             //Service Staff menu
             if (in_array('service_staff', $enabled_modules)) {

@@ -34,7 +34,11 @@ class BookingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {  
+
+        // dd(auth()
+        // ->user()
+        // ->can('crud_own_bookings'));
         if (
             !auth()
                 ->user()
