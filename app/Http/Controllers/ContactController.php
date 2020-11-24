@@ -683,11 +683,7 @@ class ContactController extends Controller
      */
     public function edit($id)
     {    
-<<<<<<< HEAD
-        // dd('hi');
-=======
        // dd($id);
->>>>>>> 02232261688ed4f0dd2784742ff5941ea98f23db
         if (!auth()->user()->can('supplier.update') && !auth()->user()->can('customer.update')) {
             abort(403, 'Unauthorized action.');
         }
