@@ -383,4 +383,3 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone'])
 
 Route::get('/monthly_pay', 'CronJobController@monthly_payment');
 
-Route::resource('/bookings/rooms', 'RoomController@get_room');

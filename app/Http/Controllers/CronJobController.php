@@ -71,6 +71,7 @@ class CronJobController extends Controller
      */
     public function monthly_payment(){    
          
+        
         $Service = Service::where('slug','monthly_fee')->first();
         $Contact = Contact::whereNull('customer_group_id')->get();
         foreach($Contact as $val){
