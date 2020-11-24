@@ -1,6 +1,8 @@
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
 		<div class="modal-header">
+	
+	
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="modal-title">@lang( 'restaurant.booking_details' )</h4>
 			</div>
@@ -15,13 +17,15 @@
 						<strong>@lang('restaurant.customer_note'):</strong> {{ $booking->booking_note }}
 						@endif
 					</div>
+					
 					<div class="col-sm-6">
-						<strong>@lang('messages.location'):</strong> {{ $booking->location->name }}<br>
-						<strong>@lang('restaurant.table'):</strong> {{ $booking->table->name ?? '--' }}<br>
+						<strong>Room Name :</strong> {{ $booking->rooms->name ?? '--' }}<br>
+						<strong>Type </strong> {{ ucfirst($booking->rooms->type) ?? '--' }}<br>
 						<strong>@lang('restaurant.booking_starts'):</strong> {{ $booking_start }}<br>
 						<strong>@lang('restaurant.booking_ends'):</strong> {{ $booking_end }}
 					</div>
 				</div>
+				
 				<br>
 				<hr>
 				<div class="row">

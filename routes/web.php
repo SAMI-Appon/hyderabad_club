@@ -63,6 +63,8 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::post('/contacts/check-contact-id', 'ContactController@checkContactId');
     Route::get('/contacts/customers', 'ContactController@getCustomers');
     Route::get('/contacts/show_add_family/{id}', 'ContactController@show_add_family');
+    Route::post('/contacts/customer_show', 'ContactController@customer_show');
+    Route::get('/contacts/search_customer', 'ContactController@search_customer');
 
     Route::resource('contacts', 'ContactController');
 
@@ -327,6 +329,9 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
 
     Route::get('bookings/get-todays-bookings', 'Restaurant\BookingController@getTodaysBookings');
     Route::resource('bookings', 'Restaurant\BookingController');
+    Route::get('get-rooms', 'Restaurant\BookingController@getRooms')->name('get_rooms');
+    Route::get('get-members', 'Restaurant\BookingController@getFamilyMembers')->name('get_members');
+
 
     Route::resource('types-of-service', 'TypesOfServiceController');
     Route::get('sells/edit-shipping/{id}', 'SellController@editShipping');

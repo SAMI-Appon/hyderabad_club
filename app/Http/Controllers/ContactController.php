@@ -55,7 +55,7 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { 
         $type = request()->get('type');
 
         $types = ['supplier', 'customer'];
@@ -79,7 +79,23 @@ class ContactController extends Controller
         return view('contact.index')
             ->with(compact('type', 'reward_enabled'));
     }
-
+    public function customer_show(request $request)
+    {   
+        $data = array(
+            'title' => 'View Customer',
+            'customer_data' => Contact::where('contact_id',$request->cus_id)->get(), 
+        );
+       // dd($data['customer_data']);
+        return view('contact.customer_show')->with($data);
+    }
+    public function search_customer()
+    {
+        $data = array(
+            'title' => 'Search Customer',
+            'users' => Contact::get(),
+        );
+        return view('contact.search_customer')->with($data);
+    }
     /**
      * Returns the database object for supplier
      *
@@ -249,7 +265,7 @@ class ContactController extends Controller
         if (!auth()->user()->can('customer.view')) {
             abort(403, 'Unauthorized action.');
         }
-
+        
         $business_id = request()->session()->get('user.business_id');
 
         $query = Contact::leftjoin('transactions AS t', 'contacts.id', '=', 't.contact_id')
@@ -474,7 +490,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {    
-
+      // dd($request);
 
         // \App\Helpers\CommonHelpers::uploadSingleFile($val, 'upload/documents/', 'png,gif,csv,jpeg,pdf,xls,xlsx,doc,docx,jpg');
 
@@ -496,10 +512,11 @@ class ContactController extends Controller
             if (!$this->moduleUtil->isSubscribed($business_id)) {
                 return $this->moduleUtil->expiredResponse();
             }
+
             if(@$request->is_family_member){
-                // dd('hi');
+              //   dd('hi');
                 $input = $request->only([
-                'prefix', 'first_name', 'middle_name', 'last_name', 'mobile','customer_group_id', 'marital_status' ,  'email','dob','contact_id','relationship']);
+               'type', 'prefix', 'first_name', 'middle_name', 'last_name', 'mobile','customer_group_id', 'marital_status' ,  'email','contact_id','dob','relationship']);
                 if(@$request->is_edit>0){
                    
                     unset($input['customer_group_id']);
@@ -533,10 +550,10 @@ class ContactController extends Controller
 
                 $contact = Contact::create($input);
 
-                $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
-                $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
+                // $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
+                // $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
 
-                Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
+                // Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
 
                 $output = [ 'success' => true,
                             'data' => $contact,
@@ -569,7 +586,7 @@ class ContactController extends Controller
             if (!empty($input['dob'])) {
                 $input['dob'] = $this->commonUtil->uf_date($input['dob']);
             }
-
+           
             $input['business_id'] = $business_id;
             $input['created_by'] = $request->session()->get('user.id');
 
@@ -582,7 +599,7 @@ class ContactController extends Controller
                                 ->where('contact_id', $input['contact_id'])
                                 ->count();
             }
-          
+            // dd($count);          
             if ($count == 0) {
                 //Update reference count
                 $ref_count = $this->commonUtil->setAndGetReferenceCount('contacts');
@@ -592,13 +609,13 @@ class ContactController extends Controller
                     $input['contact_id'] = $this->commonUtil->generateReferenceNumber('contacts', $ref_count);
                 }
 
-
+               
                 $contact = Contact::create($input);
 
-                $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
-                $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
+                // $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
+                // $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
 
-                Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
+                // Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
                 
                 // Contact::update(['qr_code' => $qr_code])->where('id',$contact->id);
 
@@ -636,7 +653,7 @@ class ContactController extends Controller
         if (!auth()->user()->can('supplier.view') && !auth()->user()->can('customer.view')) {
             abort(403, 'Unauthorized action.');
         }
-
+        // dd($id);
         $business_id = request()->session()->get('user.business_id');
         $contact = $this->contactUtil->getContactInfo($business_id, $id);
 
@@ -666,7 +683,11 @@ class ContactController extends Controller
      */
     public function edit($id)
     {    
+<<<<<<< HEAD
         // dd('hi');
+=======
+       // dd($id);
+>>>>>>> 02232261688ed4f0dd2784742ff5941ea98f23db
         if (!auth()->user()->can('supplier.update') && !auth()->user()->can('customer.update')) {
             abort(403, 'Unauthorized action.');
         }
@@ -709,8 +730,14 @@ class ContactController extends Controller
             // dd($contact);
             if($contact->relationship!='parent' &&  !empty($contact->relationship)){
                 // dd($contact);
-                return view('contact.create_cus_family')
-                ->with(compact('contact'));
+                $data = array(
+                    'title' => 'Add Family Member',
+                    'is_edit' => 1,
+                    'contact'  => Contact::where('business_id', $business_id)->find($id),
+                );
+                return view('contact.create_cus_family')->with($data);
+                // return view('contact.create_cus_family')
+                // ->with(compact('contact'));
             }
             return view('contact.edit')
                 ->with(compact('contact', 'types', 'customer_groups', 'opening_balance'));
@@ -725,13 +752,13 @@ class ContactController extends Controller
         if (request()->ajax()) {
 
             $business_id = request()->session()->get('user.business_id');
-            $contact = Contact::where('business_id', $business_id)->find($id);
-
-            if (!$this->moduleUtil->isSubscribed($business_id)) {
+            
+           
+            if (!$this->moduleUtil->isSubscribed($business_id)) { 
                 return $this->moduleUtil->expiredResponse();
             }
 
-           
+            
 
 
             // $ob_transaction =  Transaction::where('contact_id', $id)
@@ -748,9 +775,13 @@ class ContactController extends Controller
 
             //     $opening_balance = $this->commonUtil->num_f($opening_balance);
             // }
-            // dd($contact);
-            return view('contact.create_cus_family')
-                ->with(compact('contact'));
+           //  dd($contact);
+            $data = array(
+                'title' => 'Add Family Member',
+                'is_edit' => 0,
+                'contact1'  => Contact::where('business_id', $business_id)->find($id),
+            );
+            return view('contact.create_cus_family')->with($data);
         }
     }
 
