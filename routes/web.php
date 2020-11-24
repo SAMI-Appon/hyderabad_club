@@ -329,6 +329,8 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
 
     Route::get('bookings/get-todays-bookings', 'Restaurant\BookingController@getTodaysBookings');
     Route::resource('bookings', 'Restaurant\BookingController');
+    Route::resource('bookings/rooms', 'Restaurant\BookingController@roomlist');
+
     Route::get('get-rooms', 'Restaurant\BookingController@getRooms')->name('get_rooms');
     Route::get('get-members', 'Restaurant\BookingController@getFamilyMembers')->name('get_members');
 
