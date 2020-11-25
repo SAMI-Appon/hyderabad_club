@@ -1,4 +1,4 @@
-<div class="modal-dialog" role="document">
+<div class="modal-dialog" role="document" id="detail_booking">
 	<div class="modal-content">
 		<div class="modal-header">
 	

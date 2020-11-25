@@ -54,6 +54,8 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-12 text-right">
+                            <a href="{{action('Restaurant\BookingController@room_list')}}" class="btn btn-info"><i
+                                    class="fa fa-bed"></i> Room List</a>
                             <button type="button" class="btn btn-primary" id="add_new_booking_btn"><i
                                     class="fa fa-plus"></i> @lang('restaurant.add_booking')</button>
                         </div>
@@ -267,8 +269,8 @@ $(document).ready(function() {
             },
         ],
         fnDrawCallback: function(oSettings) {
-                __currency_convert_recursively($('#todays_bookings_table'));
-            }
+            __currency_convert_recursively($('#todays_bookings_table'));
+        }
     });
     $('button#add_new_booking_btn').click(function() {
         $('div#add_booking_modal').modal('show');
@@ -339,7 +341,7 @@ function roomType(type) {
         success: function(result) {
             var toAppend = '<option value="">Select Room & Hall</option>';
             $.each(result.data, function(i, o) {
-                toAppend += '<option value="'+i+'">' + o + '</option>';
+                toAppend += '<option value="' + i + '">' + o + '</option>';
             });
 
             $('#getRooms').html(toAppend);
@@ -359,7 +361,7 @@ function selectCustomer(id) {
         success: function(result) {
             var toAppend = '<option value="">Select Family Member</option>';
             $.each(result.data, function(i, o) {
-                toAppend += '<option value="'+i+'">' + o + '</option>';
+                toAppend += '<option value="' + i + '">' + o + '</option>';
             });
 
             $('#getMembers').html(toAppend);
