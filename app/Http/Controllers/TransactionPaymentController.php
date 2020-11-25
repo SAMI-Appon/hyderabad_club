@@ -68,9 +68,9 @@ class TransactionPaymentController extends Controller
             $transaction_id = $request->input('transaction_id');
             $transaction = Transaction::where('business_id', $business_id)->findOrFail($transaction_id);
 
-            if (!auth()->user()->can('purchase.payments') || !auth()->user()->can('sell.payments')) {
-                abort(403, 'Unauthorized action.');
-            }
+            // if (!auth()->user()->can('purchase.payments') || !auth()->user()->can('sell.payments')) {
+            //     abort(403, 'Unauthorized action.');
+            // }
 
             if ($transaction->payment_status != 'paid') {
                 $inputs = $request->only(['amount', 'method', 'note', 'card_number', 'card_holder_name',
@@ -390,9 +390,9 @@ class TransactionPaymentController extends Controller
      */
     public function getPayContactDue($contact_id)
     {
-        if (!auth()->user()->can('purchase.create')) {
-            abort(403, 'Unauthorized action.');
-        }
+        // if (!auth()->user()->can('purchase.create')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
 
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');
