@@ -1651,9 +1651,9 @@ class SellPosController extends Controller
      */
     public function listSubscriptions()
     {
-        if (!auth()->user()->can('sell.view') && !auth()->user()->can('direct_sell.access')) {
-            abort(403, 'Unauthorized action.');
-        }
+        // if (!auth()->user()->can('sell.view') && !auth()->user()->can('direct_sell.access')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
 
         if (request()->ajax()) {
             $business_id = request()->session()->get('user.business_id');

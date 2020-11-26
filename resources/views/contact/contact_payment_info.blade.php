@@ -16,17 +16,17 @@
     </p>
 @endif
 @if( $contact->type == 'customer' || $contact->type == 'both')
-    <strong>@lang('report.total_sell')</strong>
+    <strong>Total Expense</strong>
     <p class="text-muted">
     <span class="display_currency" data-currency_symbol="true">
     {{ $contact->total_invoice }}</span>
     </p>
-    <strong>@lang('contact.total_sale_paid')</strong>
+    <strong>Total Expense Payment</strong>
     <p class="text-muted">
     <span class="display_currency" data-currency_symbol="true">
     {{ $contact->invoice_received }}</span>
     </p>
-    <strong>@lang('contact.total_sale_due')</strong>
+    <strong>Total Expense Due</strong>
     <p class="text-muted">
     <span class="display_currency" data-currency_symbol="true">
     {{ $contact->total_invoice - $contact->invoice_received }}</span>
