@@ -34,8 +34,7 @@ class BookingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {  
-
+    {
         // dd(auth()
         // ->user()
         // ->can('crud_own_bookings'));
@@ -61,7 +60,7 @@ class BookingController extends Controller
             $end_date = request()->end;
             $query = Booking::where('business_id', $business_id)
                 ->whereBetween(DB::raw('date(booking_start)'), [$start_date, $end_date])
-                ->with(['customer' ,'rooms']);
+                ->with(['customer', 'rooms']);
 
             if (
                 !auth()
@@ -86,9 +85,9 @@ class BookingController extends Controller
                 }
 
                 $customer_name = $booking->customer->name;
-               // $table_name = optional($booking->table)->name;
-                $room_name =  $booking->rooms->name;
-              //  $room_type =  $booking->rooms->type;
+                // $table_name = optional($booking->table)->name;
+                $room_name = $booking->rooms->name;
+                //  $room_type =  $booking->rooms->type;
 
                 $backgroundColor = '#3c8dbc';
                 $borderColor = '#3c8dbc';
@@ -107,7 +106,7 @@ class BookingController extends Controller
                     'title' => $title,
                     'start' => $booking->booking_start,
                     'end' => $booking->booking_end,
-                    'customer_name' => $customer_name.' - Room Name: '.$room_name,
+                    'customer_name' => $customer_name . ' - Room Name: ' . $room_name,
                     'room' => $room_name,
                     'url' => action('Restaurant\BookingController@show', [$booking->id]),
                     // 'start_time' => $start_time,
@@ -121,37 +120,41 @@ class BookingController extends Controller
             return $events;
         }
 
-    
-
         //  $business_locations = BusinessLocation::forDropdown($business_id);
 
-        $customers = Contact::customersDropdown($business_id, false,true,true,true);
+        $customers = Contact::customersDropdown($business_id, false, true, true, true);
 
         $types = Contact::getContactTypes();
         $customer_groups = CustomerGroup::forDropdown($business_id);
-      
-        return view(
-            'restaurant.booking.index',
-            compact('customers', 'types', 'customer_groups')
-        );
+
+        return view('restaurant.booking.index', compact('customers', 'types', 'customer_groups'));
     }
 
     public function getRooms(Request $request)
     {
         return response()->json([
             'status' => 'success',
-            'data' =>  Rooms::forDropdown($request->type),
+            'data' => Rooms::forDropdown($request->type),
         ]);
     }
 
     public function getFamilyMembers(Request $request)
     {
-        $business_id = request()->session()->get('user.business_id');
+        $business_id = request()
+            ->session()
+            ->get('user.business_id');
 
         return response()->json([
             'status' => 'success',
             'id' => $request->id,
-            'data' =>  Contact::customersDropdown($business_id,false,true,true,false,$request->id),
+            'data' => Contact::customersDropdown(
+                $business_id,
+                false,
+                true,
+                true,
+                false,
+                $request->id
+            ),
         ]);
     }
 
@@ -196,30 +199,31 @@ class BookingController extends Controller
                 // $booking_start = $this->commonUtil->uf_date($input['booking_start'], true);
                 // $booking_end = $this->commonUtil->uf_date($input['booking_end'], true);
 
-                $booking_start =  date('Y-m-d H:i:s' ,strtotime($input['booking_start']));
-                $booking_end = date('Y-m-d H:i:s' ,strtotime($input['booking_end']));
+                $booking_start = date('Y-m-d H:i:s', strtotime($input['booking_start']));
+                $booking_end = date('Y-m-d H:i:s', strtotime($input['booking_end']));
 
-               // $date_range = [$booking_start, $booking_end];
-                
-               //Check if booking is available for the required input
+                // $date_range = [$booking_start, $booking_end];
+
+                //Check if booking is available for the required input
                 $query = Booking::where('business_id', $business_id)
                     ->where('room_id', $input['room_id'])
+                    ->where('booking_status', 'booked')
                     ->where('booking_end', '>=', $booking_start)
                     ->where('booking_start', '<=', $booking_end);
 
-                    // ->where(function ($q) use ($date_range) {
-                    //     $q
-                    //         ->whereBetween('booking_start', $date_range)
-                    //         ->orWhereBetween('booking_end', $date_range);
-                    // });
+                // ->where(function ($q) use ($date_range) {
+                //     $q
+                //         ->whereBetween('booking_start', $date_range)
+                //         ->orWhereBetween('booking_end', $date_range);
+                // });
 
                 // if (isset($input['res_table_id'])) {
                 //     $query->where('table_id', $input['res_table_id']);
                 // }
 
                 $existing_booking = $query->first();
-               // var_dump($existing_booking);
-               // die();
+                // var_dump($existing_booking);
+                // die();
 
                 if (empty($existing_booking)) {
                     $data = [
@@ -284,34 +288,29 @@ class BookingController extends Controller
     public function show($id)
     {
         if (request()->ajax()) {
-            
             $business_id = request()
                 ->session()
                 ->get('user.business_id');
             $booking = Booking::where('business_id', $business_id)
                 ->where('id', $id)
-                ->with(['customer', 'correspondent','rooms'])
+                ->with(['customer', 'correspondent', 'rooms'])
                 ->first();
-                
+
             if (!empty($booking)) {
                 $booking_start = $this->commonUtil->format_date($booking->booking_start, true);
                 $booking_end = $this->commonUtil->format_date($booking->booking_end, true);
-               
+
                 $booking_statuses = [
                     'booked' => __('restaurant.booked'),
                     'completed' => __('restaurant.completed'),
                     'cancelled' => __('restaurant.cancelled'),
                 ];
-              
+
                 return view(
                     'restaurant.booking.show',
                     compact('booking', 'booking_start', 'booking_end', 'booking_statuses')
                 );
-               
-                
             }
-
-            
         }
     }
 
@@ -323,7 +322,6 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        //
     }
 
     /**
@@ -347,13 +345,44 @@ class BookingController extends Controller
         }
         try {
             $business_id = $request->session()->get('user.business_id');
-            $booking = Booking::where('business_id', $business_id)->find($id);
-            if (!empty($booking)) {
-                $booking->booking_status = $request->booking_status;
-                $booking->save();
+            //Check if booking is available for the required input
+            $query = Booking::where('business_id', $business_id)
+                ->where('room_id', $request->room_id)
+                ->where('booking_status', 'booked')
+                ->where('booking_end', '>=', $request->booking_start)
+                ->where('booking_start', '<=', $request->booking_end);
+
+            $existing_booking = $query->first();
+            // var_dump($existing_booking);
+            // die();
+
+            $booking_chk = true;
+            if($request->booking_status == 'booked'){
+                $booking_chk = (empty($existing_booking))? true: false;
             }
 
-            $output = ['success' => 1, 'msg' => trans('lang_v1.updated_success')];
+            if ($booking_chk) {
+                $booking = Booking::where('business_id', $business_id)->find($id);
+                if (!empty($booking)) {
+                    $booking->booking_status = $request->booking_status;
+                    $booking->save();
+                }
+
+                $output = ['success' => 1, 'msg' => trans('lang_v1.updated_success')];
+            } else {
+                $time_range =
+                    $this->commonUtil->format_date($existing_booking->booking_start, true) .
+                    ' ~ ' .
+                    $this->commonUtil->format_date($existing_booking->booking_end, true);
+
+                $output = [
+                    'success' => 0,
+                    'msg' => trans('restaurant.booking_not_available', [
+                        'customer_name' => $existing_booking->customer->name,
+                        'booking_time_range' => $time_range,
+                    ]),
+                ];
+            }
         } catch (\Exception $e) {
             \Log::emergency(
                 'File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage()
@@ -428,7 +457,7 @@ class BookingController extends Controller
             $query = Booking::where('business_id', $business_id)
                 ->where('booking_status', 'booked')
                 ->whereDate('booking_start', $today)
-                ->with(['customer', 'correspondent','rooms']);
+                ->with(['customer', 'correspondent', 'rooms']);
 
             // if (!empty(request()->location_id)) {
             //     $query->where('location_id', request()->location_id);
@@ -459,11 +488,14 @@ class BookingController extends Controller
                     return $this->commonUtil->format_date($row->booking_end, true);
                 })
                 ->editColumn('amount', function ($row) {
-                    return '<span class="display_currency payment_due" data-currency_symbol="true" data-orig-value="' . $row->rooms->fee . '">' . $row->rooms->fee . '</span>';
+                    return '<span class="display_currency payment_due" data-currency_symbol="true" data-orig-value="' .
+                        $row->rooms->fee .
+                        '">' .
+                        $row->rooms->fee .
+                        '</span>';
                 })
                 ->editColumn('type', function ($row) {
-                    return ($row->type == 'room')? 'Room': 'Hall';
-
+                    return $row->type == 'room' ? 'Room' : 'Hall';
                 })
                 ->removeColumn('id')
                 ->rawColumns(['amount'])
@@ -473,17 +505,15 @@ class BookingController extends Controller
 
     public function room_list()
     {
-      ///  $roomGet = Rooms::get();
-      $today =  date('Y-m-d');
+        ///  $roomGet = Rooms::get();
+       
+         $today =  date('Y-m-d');
       $roomGet =  DB::select(DB::raw("SELECT rooms.*,
       (SELECT CONCAT(bookings.`id`,',',bookings.`booking_status`) FROM bookings WHERE bookings.`room_id` = rooms.`id`
-        AND bookings.booking_end >= '".$today."'  AND bookings.booking_start <= '".$today."'
+        AND DATE(bookings.booking_end) >= '".$today."'  AND DATE(bookings.booking_start) <= '".$today."'
        GROUP BY  bookings.`room_id` ) AS check_booked FROM rooms WHERE rooms.`deleted_at` IS NULL"));
-   
-      return view(
-            'restaurant.booking.roomlist',
-            compact('roomGet')
-        );
-    }
 
+
+        return view('restaurant.booking.roomlist', compact('roomGet'));
+    }
 }
