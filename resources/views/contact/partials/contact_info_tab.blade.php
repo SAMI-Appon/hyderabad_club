@@ -17,12 +17,12 @@
         </div>
         @if( $contact->type == 'customer' || $contact->type == 'both')
             <div class="col-sm-3 @if($contact->type != 'both') mt-56 @endif">
-                <strong>@lang('lang_v1.total_sell_return')</strong>
+                <strong>Total Expense Return</strong>
                 <p class="text-muted">
                     <span class="display_currency" data-currency_symbol="true">
                     {{ $contact->total_sell_return }}</span>
                 </p>
-                <strong>@lang('lang_v1.total_sell_return_due')</strong>
+                <strong>Total Expense Return Due</strong>
                 <p class="text-muted">
                     <span class="display_currency" data-currency_symbol="true">
                     {{ $contact->total_sell_return -  $contact->total_sell_return_paid }}</span>

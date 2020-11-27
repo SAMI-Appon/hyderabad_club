@@ -395,6 +395,7 @@ class TransactionPaymentController extends Controller
         // }
 
         if (request()->ajax()) {
+           // echo $contact_id;die();
             $business_id = request()->session()->get('user.business_id');
 
             $due_payment_type = request()->input('type');
@@ -478,7 +479,7 @@ class TransactionPaymentController extends Controller
 
             //Accounts
             $accounts = $this->moduleUtil->accountsDropdown($business_id, true);
-
+ //dd($contact_details);
             if ($payment_line->amount > 0) {
                 return view('transaction_payment.pay_supplier_due_modal')
                         ->with(compact('contact_details', 'payment_types', 'payment_line', 'due_payment_type', 'ob_due', 'amount_formated', 'accounts'));

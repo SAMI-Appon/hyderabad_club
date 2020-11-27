@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Business;
 use App\BusinessLocation;
 use App\Contact;
+use App\TransactionPayment;
 use App\CustomerGroup;
 use App\Notifications\CustomerNotification;
 use App\PurchaseLine;
 use App\Transaction;
 use App\User;
+use App\Comments;
 use App\Utils\ContactUtil;
 use App\Utils\ModuleUtil;
 use App\Utils\NotificationUtil;
@@ -81,11 +83,17 @@ class ContactController extends Controller
     }
     public function customer_show(request $request)
     {   
+     
+        $getContact = Contact::where('contact_id',$request->cus_id)->get();
+
         $data = array(
             'title' => 'View Customer',
-            'customer_data' => Contact::where('contact_id',$request->cus_id)->get(), 
+            'due_balance' => $this->getPayContactDue($getContact[0]['id']),
+            'comment' => Comments::latest()->where('contact_id',$getContact[0]['id'])->take(1)->first(),
+            'customer_data' => $getContact, 
         );
-       // dd($data['customer_data']);
+
+     
         return view('contact.customer_show')->with($data);
     }
     public function search_customer()
@@ -1558,6 +1566,49 @@ class ContactController extends Controller
 
         return view('contact.contact_map')
              ->with(compact('contacts', 'all_contacts'));
+    }
+
+
+    public function getPayContactDue($contact_id)
+    {
+        
+            //$due_payment_type = request()->input('type');
+            $query = Contact::where('contacts.id', $contact_id)
+                            ->join('transactions AS t', 'contacts.id', '=', 't.contact_id');
+          
+                $query->select(
+                    DB::raw("SUM(IF(t.type = 'sell' AND t.status = 'final', final_total, 0)) as total_invoice"),
+                    DB::raw("SUM(IF(t.type = 'sell' AND t.status = 'final', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as total_paid"),
+                    'contacts.name',
+                    'contacts.supplier_business_name',
+                    'contacts.id as contact_id'
+                );
+            
+            //Query for opening balance details
+            $query->addSelect(
+                DB::raw("SUM(IF(t.type = 'opening_balance', final_total, 0)) as opening_balance"),
+                DB::raw("SUM(IF(t.type = 'opening_balance', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
+            );
+            $contact_details = $query->first();
+            
+            $payment_line = new TransactionPayment();
+            $contact_details->total_invoice = empty($contact_details->total_invoice) ? 0 : $contact_details->total_invoice;
+
+            //If opening balance due exists add to payment amount
+            $contact_details->opening_balance = !empty($contact_details->opening_balance) ? $contact_details->opening_balance : 0;
+            $contact_details->opening_balance_paid = !empty($contact_details->opening_balance_paid) ? $contact_details->opening_balance_paid : 0;
+            $ob_due = $contact_details->opening_balance - $contact_details->opening_balance_paid;
+            if ($ob_due > 0) {
+                $payment_line->amount += $ob_due;
+            }
+
+            
+
+            $contact_details->total_paid = empty($contact_details->total_paid) ? 0 : $contact_details->total_paid;
+            
+           
+            return compact('contact_details','ob_due');
+        
     }
 
     

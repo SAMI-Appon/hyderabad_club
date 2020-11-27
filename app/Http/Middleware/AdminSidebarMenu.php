@@ -26,7 +26,7 @@ class AdminSidebarMenu
             // dd($enabled_modules);
             //Home
             $menu->url(action('HomeController@index'), __('home.home'), ['icon' => 'fa fas fa-tachometer-alt', 'active' => request()->segment(1) == 'home'])->order(5);
-
+            
             //User management dropdown
             if (auth()->user()->can('user.view') || auth()->user()->can('user.create') || auth()->user()->can('roles.view')) {
                 $menu->dropdown(
@@ -101,6 +101,8 @@ class AdminSidebarMenu
                     ['icon' => 'fa fas fa-address-book', 'id' => "tour_step4"]
                 )->order(15);
             }
+
+            $menu->url(action('CommentController@index'), 'Comments', ['icon' => 'fa fas fa-comment-alt', 'active' => request()->segment(1) == 'comments'])->order(16);
 
             //Products dropdown
             if (auth()->user()->can('product.view') || auth()->user()->can('product.create') ||

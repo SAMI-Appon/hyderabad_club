@@ -470,4 +470,20 @@ class BookingController extends Controller
                 ->make(true);
         }
     }
+
+    public function room_list()
+    {
+      ///  $roomGet = Rooms::get();
+      $today =  date('Y-m-d');
+      $roomGet =  DB::select(DB::raw("SELECT rooms.*,
+      (SELECT CONCAT(bookings.`id`,',',bookings.`booking_status`) FROM bookings WHERE bookings.`room_id` = rooms.`id`
+        AND bookings.booking_end >= '".$today."'  AND bookings.booking_start <= '".$today."'
+       GROUP BY  bookings.`room_id` ) AS check_booked FROM rooms WHERE rooms.`deleted_at` IS NULL"));
+   
+      return view(
+            'restaurant.booking.roomlist',
+            compact('roomGet')
+        );
+    }
+
 }
