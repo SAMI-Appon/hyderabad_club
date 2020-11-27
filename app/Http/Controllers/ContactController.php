@@ -544,9 +544,11 @@ class ContactController extends Controller
                 if(@$request->file('photo')){
                     $input['image']=  \App\Helpers\CommonHelpers::uploadSingleFile($request->file('photo'), 'upload/contact_info_images/', 'png,gif,jpeg,jpg');
                 }  
-                $input['name'] = implode(' ', [$input['prefix'], $input['first_name'], $input['middle_name'], $input['last_name']]);
-                $input['business_id'] = $business_id;
-                $input['created_by'] = $request->session()->get('user.id');
+                $input['name']          = implode(' ', [$input['prefix'], $input['first_name'], $input['middle_name'], $input['last_name']]);
+                $input['business_id']   = $business_id;
+                $input['created_by']    = $request->session()->get('user.id');
+
+                
 
                 $contact = Contact::create($input);
 
@@ -609,7 +611,7 @@ class ContactController extends Controller
                     $input['contact_id'] = $this->commonUtil->generateReferenceNumber('contacts', $ref_count);
                 }
 
-               
+                $input['password'] =  \Hash::make('SSB-'.$input['contact_id']);
                 $contact = Contact::create($input);
 
                 // $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);

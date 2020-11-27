@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'CheckContactLogin' => \Modules\Crm\Http\Middleware\CheckContactLogin::class,
         'CheckUserLogin' => \App\Http\Middleware\CheckUserLogin::class,
         'ContactSidebarMenu' =>  \Modules\Crm\Http\Middleware\ContactSidebarMenu::class,
+        'basicAuth' => \App\Http\Middleware\BasicAuth::class 
         
     ];
     /**
