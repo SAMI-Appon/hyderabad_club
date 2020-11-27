@@ -334,6 +334,10 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::get('get-rooms', 'Restaurant\BookingController@getRooms')->name('get_rooms');
     Route::get('get-members', 'Restaurant\BookingController@getFamilyMembers')->name('get_members');
 
+    Route::resource('comments', 'CommentController');  
+    Route::get('comments/create', 'CommentController@create'); 
+    Route::post('comment-save', 'CommentController@store'); 
+    Route::get('comment-deleted/{cmd_id}', 'CommentController@destroy'); 
 
     Route::resource('types-of-service', 'TypesOfServiceController');
     Route::get('sells/edit-shipping/{id}', 'SellController@editShipping');

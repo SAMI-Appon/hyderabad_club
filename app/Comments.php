@@ -11,5 +11,8 @@ class Comments extends Model
 
     protected $guarded = ['id'];
 
-   
+    public function customers()
+    {
+        return $this->belongsTo('App\Contact','contact_id');
+    }
 }
