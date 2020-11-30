@@ -26,13 +26,14 @@ class AppController extends Controller
                 'msg' => 'User Not Found',
             ]);
         }
+        //password -  SSB-contact_id
         $Hash = \Hash::check($password, $contact->password);
         if($Hash){
             $family_members  = Contact::where('contact_id',$contact['contact_id'])->where('relationship','!=','parent')->get();
             unset($contact['password']);
             return response()->json([
                 'status' =>  'sucess',
-                'data'   =>  ['user'=>$contact,'home_data'=>['https://www.adspeed.com/placeholder-300x250.gif','https://www.adspeed.com/placeholder-300x250.gif','https://www.adspeed.com/placeholder-300x250.gif','family_members'=>$family_members,'last_payment_details'=>$this->getPayContactDue($contact['contact_id'])]]
+                'data'   =>  ['user'=>$contact,'home_data'=>['https://www.adspeed.com/placeholder-300x250.gif','https://www.adspeed.com/placeholder-300x250.gif','https://www.adspeed.com/placeholder-300x250.gif','family_members'=>$family_members,'last_payment_details'=>$this->getPayContactDue($contact['id'])]]
                 
             ]);
         } 

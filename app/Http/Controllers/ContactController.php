@@ -1323,6 +1323,8 @@ class ContactController extends Controller
 
         $ledger_details = $this->transactionUtil->getLedgerDetails($contact_id, $start_date, $end_date);
 
+        //dd($ledger_details);
+
         if (request()->input('action') == 'pdf') {
             $for_pdf = true;
             $html = view('contact.ledger')

@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="well">
+          <!-- <div class="well">
             <strong>@lang('report.total_purchase'): </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_purchase }}</span><br>
             <strong>@lang('contact.total_paid'): </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_paid }}</span><br>
             <strong>@lang('contact.total_purchase_due'): </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_purchase - $contact_details->total_paid }}</span><br>
@@ -32,7 +32,7 @@
                   <span class="display_currency" data-currency_symbol="true">
                   {{ $ob_due }}</span>
               @endif
-          </div>
+          </div> -->
         </div>
         @elseif($due_payment_type == 'purchase_return')
         <div class="col-md-6">
@@ -57,9 +57,15 @@
           </div>
           <div class="col-md-6">
             <div class="well">
-              <strong>Total Expense: </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_invoice }}</span><br>
+              <strong>
+                Total {{ expense() }}: 
+                <!-- @lang('report.total_sell'):  -->
+              </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_invoice }}</span><br>
               <strong>@lang('contact.total_paid'): </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_paid }}</span><br>
-              <strong>Total Expense Due: </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_invoice - $contact_details->total_paid }}</span><br>
+              <strong>
+              Total {{ expense() }} Due:
+                <!-- @lang('contact.total_sale_due'):  -->
+              </strong><span class="display_currency" data-currency_symbol="true">{{ $contact_details->total_invoice - $contact_details->total_paid }}</span><br>
               @if(!empty($contact_details->opening_balance) || $contact_details->opening_balance != '0.00')
                   <strong>@lang('lang_v1.opening_balance'): </strong>
                   <span class="display_currency" data-currency_symbol="true">

@@ -88,7 +88,7 @@
                             @else
                                 ''
                             @endif">
-                            <a href="#sales_tab" data-toggle="tab" aria-expanded="true"><i class="fas fa-arrow-circle-up" aria-hidden="true"></i> Expenses</a>
+                            <a href="#sales_tab" data-toggle="tab" aria-expanded="true"><i class="fas fa-arrow-circle-up" aria-hidden="true"></i> {{ expense() }}s</a>
                         </li>
                         @if(in_array('subscription', $enabled_modules))
                             <li class="
