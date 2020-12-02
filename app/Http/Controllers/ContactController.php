@@ -561,7 +561,7 @@ class ContactController extends Controller
                 $contact = Contact::create($input);
 
                 // $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($contact->id);
-                // $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->contact_id.'.png');
+                // $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$contact->id.'-'.$contact->contact_id.'-'.date('YmdHis').'.png');
 
                 // Contact::where('id',$contact->id)->update(['qr_code' => $qr_code]);
 

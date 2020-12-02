@@ -586,8 +586,10 @@ class CommonHelpers
 
 
     public static function encrypt_user_id($user_id){
-      
-        return base64_encode(base64_encode(($user_id*2)));
+        return base64_encode($user_id*2);
+    }
+    public static function decrypt_user_id($user_id){
        
+        return base64_decode($user_id / 2);
     }
 }

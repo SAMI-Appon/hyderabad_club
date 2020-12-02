@@ -204,11 +204,19 @@
             </div>
           </div>
 
-          <div class="col-sm-4">
+          <div class="col-sm-3">
           <div class="form-group">
             <br>
             <label>
-              {!! Form::checkbox('not_for_selling', 1, $product->not_for_selling, ['class' => 'input-icheck']); !!} <strong>@lang('lang_v1.not_for_selling')</strong>
+              {!! Form::checkbox('not_for_selling', 1, $product->not_for_selling, ['class' => 'input-icheck','id' => "notSaleChek"]); !!} <strong>@lang('lang_v1.not_for_selling')</strong>
+            </label> @show_tooltip(__('lang_v1.tooltip_not_for_selling'))
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <br>
+            <label>
+              {!! Form::checkbox('subscription', 1, $product->subscription, ['class' => 'input-icheck' , 'id' => "subsChek"]); !!} <strong>Subscription</strong>
             </label> @show_tooltip(__('lang_v1.tooltip_not_for_selling'))
           </div>
         </div>
@@ -364,6 +372,13 @@
   <script type="text/javascript">
     $(document).ready( function(){
       __page_leave_confirmation('#product_add_form');
+
+      $('#notSaleChek').on('ifChecked', function() {
+        $('#subsChek').iCheck('uncheck');
+    })
+    $('#subsChek').on('ifChecked', function() {
+        $('#notSaleChek').iCheck('uncheck');
+    })
     });
   </script>
 @endsection
