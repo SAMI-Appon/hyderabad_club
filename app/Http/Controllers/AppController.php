@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Contact;
 use App\TransactionPayment;
+use App\Events;
 
 class AppController extends Controller
 {
@@ -60,12 +61,13 @@ class AppController extends Controller
             }
 
             $data['last_payment_details'] = $this->getPayContactDue($contact['id']);
-
-            $data['events'] = [
-                'uploads/events/placeholder-300x250.gif',
-                'uploads/events/placeholder-300x300.gif',
-                'uploads/events/placeholder-350x300.gif',
-            ];
+            
+            $data['events'] = Events::where('end_date','>=',date('YYYY-mm-dd'))->orWhere('forever',1)->get('img');
+            // [
+            //     'uploads/events/placeholder-300x250.gif',
+            //     'uploads/events/placeholder-300x300.gif',
+            //     'uploads/events/placeholder-350x300.gif',
+            // ];
             $data['base_url'] = asset('/');
 
             return response()->json([
