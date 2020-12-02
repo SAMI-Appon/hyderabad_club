@@ -103,6 +103,7 @@ class AdminSidebarMenu
             }
 
             $menu->url(action('CommentController@index'), 'Comments', ['icon' => 'fa fas fa-comment-alt', 'active' => request()->segment(1) == 'comments'])->order(16);
+            $menu->url(action('EventController@index'), 'Events', ['icon' => 'fa fas fa-calendar-alt', 'active' => request()->segment(1) == 'events'])->order(16);
 
             //Products dropdown
             if (auth()->user()->can('product.view') || auth()->user()->can('product.create') ||

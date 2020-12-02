@@ -33,29 +33,30 @@
                 <div class="box-body">
                 	<form action="{{ action('EventController@save_event') }}" method="post" enctype='multipart/form-data' novalidate>
                     @csrf
+                    <input type="hidden" value="{{ @$form_data->id }}" name="event_id">
                         <div class="row">
 		                   <div class="col-md-6">
 		                     	<div class="form-group">
                                     <label for="barcode_type">Start Date:*</label>
-                                    <input type="date" class="form-control" name="start_date" required>
+                                    <input type="date" class="form-control" name="start_date" value="{{ @$form_data->start_date }}" required>
                                 </div>
                            </div>
                            <div class="col-md-6">
 		                     	<div class="form-group">
                                     <label for="barcode_type">End Date:*</label>
-                                    <input type="date" class="form-control" name="end_date" required>
+                                    <input type="date" class="form-control" name="end_date" value="{{ @$form_data->end_date }}" required>
                                 </div>
                            </div>
                            <div class="col-md-6">
 		                     	<div class="form-group">
                                     <label for="barcode_type">Image:*</label>
-                                    <input type="file" class="form-control" name="img" required>
+                                    <input type="file" class="form-control" name="img">
                                 </div>
                            </div>
                            <div class="col-md-6">
 		                     	<div class="form-group" style="margin-top: 27px;">
                                     <label for="barcode_type">Forever:*</label> &nbsp;&nbsp;
-                                    <input type="checkbox" class="input-icheck" name="forever" value="1" required>
+                                    <input type="checkbox" class="input-icheck" name="forever" value="1" required {{ @$form_data->forever == 1 ? 'checked' : '' }}>
                                 </div>
 		                   </div>
                            <div class="col-md-12">

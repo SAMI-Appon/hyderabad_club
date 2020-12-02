@@ -40,6 +40,8 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::get('/view-event','EventController@index')->name('view_event');
     Route::get('/add-event','EventController@add_event')->name('add_event');
     Route::POST('/save_event', 'EventController@save_event');
+    Route::get('event-deleted/{cmd_id}', 'EventController@destroy');
+    Route::get('event-edit/{cmd_id}', 'EventController@edit');
 
     Route::post('/test-email', 'BusinessController@testEmailConfiguration');
     Route::post('/test-sms', 'BusinessController@testSmsConfiguration');

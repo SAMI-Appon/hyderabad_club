@@ -20,22 +20,25 @@ class EventController extends Controller
 
             return Datatables::of($cmd)
                 ->addColumn('img', function ($cmd) {
-                    $img = '<img src="' . asset($cmd->img). '" style="
-                    width: 100px;
-                    height: 100px;
-                ">';
+                    $img = '<img src="' . asset($cmd->img). '" style="width: 100px; height: 100px; ">';
                     return $img;
+                })->addColumn('start_date', function ($cmd) {
+                    return $start_date = \App\Helpers\CommonHelpers::date_format_custom($cmd->start_date);
+                })->addColumn('end_date', function ($cmd) {
+                    return $end_date = \App\Helpers\CommonHelpers::date_format_custom($cmd->end_date);
                 })->addColumn('action', function ($cmd) {
                     $btn =
-                        '<button  cmd-id="' .
+                        '<a href="' .
+                        action('EventController@edit', [$cmd->id]) .
+                        '" cmd-id="' .
                         $cmd->id .
-                        '" cus-id="' .'" class="btn btn-xs btn-primary edit_cmd_button"><i class="glyphicon glyphicon-edit"></i> edit</button>
+                        '" cus-id="' .'" class="btn btn-xs btn-primary edit_cmd_button"><i class="glyphicon glyphicon-edit"></i> edit</a>
                    &nbsp;<button data-href="' .
-                        action('CommentController@destroy', [$cmd->id]) .
-                        '" class="btn btn-xs btn-danger delete_comment_button"><i class="glyphicon glyphicon-trash"></i>Delete</button>';
+                        action('EventController@destroy', [$cmd->id]) .
+                        '" class="btn btn-xs btn-danger delete_comment_button"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
                     return $btn;
                 })
-                ->rawColumns(['action','img'])
+                ->rawColumns(['action','img','start_date','end_date'])
                 ->make(true);
         }
         $business_id = $business_id = request()
@@ -50,25 +53,55 @@ class EventController extends Controller
     {
         $data = array(
             'title' => 'Search Customer',
-            'users' => Contact::get(),
         );
         return view('events.create')->with($data);
     }
 
     public function save_event(Request $request)
-    {
+    {  
+         
+        if($request->event_id){
+            $event = Events::Where('id',$request->event_id)->first();
+        }else{
+            $event = new Events();
+        }
+
         if($request->img){
             $img = \App\Helpers\CommonHelpers::uploadSingleFile($request->file('img'), 'images/event_img/');
             if(is_array($img)){
                 return response()->json(['error' => $img['error']]);
-            }  
-        } 
-        $event = new Events();
+            } else{
+                $event->img = $img;
+            } 
+        }
         $event->start_date = $request->start_date;
         $event->end_date = $request->end_date;
-        $event->img = $img;
+        
+       
         $event->forever = $request->forever;
         $event->save();    
         return  redirect(route('view_event'));
+    }
+
+    public function destroy(Request $request)
+    {
+        if (request()->ajax()) {
+            $brand = Events::findOrFail($request->cmd_id);
+                $brand->delete();
+
+                $output = ['success' => true,
+                            'msg' => 'event deleted successfully'
+                            ];
+
+            return $output;
+        }
+    }
+    public function edit($id)
+    {
+        $data = array(
+            'title' => 'Search Customer',
+            'form_data' => Events::where('id',$id)->first(),
+        );
+        return view('events.create')->with($data);
     }
 }
