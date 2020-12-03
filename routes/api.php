@@ -14,14 +14,18 @@ use Illuminate\Http\Request;
 */
 
 
-
+// customer Route
 Route::middleware(['basicAuth'])->group(function () {
-    // customer login
+    
     Route::post('/login','AppController@login');
+    Route::post('/get-activities','AppController@get_activity');
 
+});
 
-
-// user login
-    Route::post('/login-user','AppUserController@login');
+// user Routes
+Route::prefix('user')->middleware(['basicAuth'])->group(function () {
+ 
+    Route::post('/login','AppUserController@login');
+    Route::post('/add-activity','AppUserController@add_activity');
 });
 

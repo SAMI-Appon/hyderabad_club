@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Contact;
 use App\TransactionPayment;
 use App\Events;
+use App\CustomersActivities;
 
 class AppController extends Controller
 {
@@ -36,6 +37,7 @@ class AppController extends Controller
                     'full_name' => $contact['name'],
                     'contact_id' => $contact['contact_id'],
                     'profile_image' => $contact['image'],
+                    'qr_code' => $contact['qr_code'],
                 ],
             ];
 
@@ -61,8 +63,10 @@ class AppController extends Controller
             }
 
             $data['last_payment_details'] = $this->getPayContactDue($contact['id']);
-            
-            $data['events'] = Events::where('end_date','>=',date('YYYY-mm-dd'))->orWhere('forever',1)->get('img');
+
+            $data['events'] = Events::where('end_date', '>=', date('YYYY-mm-dd'))
+                ->orWhere('forever', 1)
+                ->get('img');
             // [
             //     'uploads/events/placeholder-300x250.gif',
             //     'uploads/events/placeholder-300x300.gif',
@@ -71,7 +75,7 @@ class AppController extends Controller
             $data['base_url'] = asset('/');
 
             return response()->json([
-                'status' => 'sucess',
+                'status' => 'success',
                 'data' => $data,
             ]);
         }
@@ -79,6 +83,34 @@ class AppController extends Controller
             'status' => 'error',
             'msg' => 'Wrong password',
         ]);
+    }
+
+    public function get_activity(Request $request)
+    {
+        try {
+            $customer_id = $request->input('customer_id');
+            $customer = Contact::where('id', $customer_id)->first();
+
+            $query = CustomersActivities::with(['customers','users','services']);
+
+            // check parent and child customer
+            if (empty($customer->customer_group_id)) {
+                $query = $query->where('contact_id', $customer->contact_id);
+            } else {
+                $query = $query->where('customer_id', $customer_id);
+            }
+
+            $CustomersActivityget = $query->latest()->get();
+
+            $output = [
+                'status' => 'success',
+                'data' => $CustomersActivityget,
+            ];
+        } catch (\Exception $e) {
+            $output = ['status' => 'error', 'msg' => __('messages.something_went_wrong')];
+        }
+
+        return response()->json($output);
     }
 
     public function getPayContactDue($contact_id)
