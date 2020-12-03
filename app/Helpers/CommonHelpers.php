@@ -589,7 +589,7 @@ class CommonHelpers
         return base64_encode($user_id*2);
     }
     public static function decrypt_user_id($user_id){
-       
-        return base64_decode($user_id / 2);
+         $user_id = base64_decode($user_id);
+         return $user_id / 2;
     }
 }

@@ -16,6 +16,12 @@ use Illuminate\Http\Request;
 
 
 Route::middleware(['basicAuth'])->group(function () {
+    // customer login
     Route::post('/login','AppController@login');
+
+
+
+// user login
+    Route::post('/login-user','AppUserController@login');
 });
 

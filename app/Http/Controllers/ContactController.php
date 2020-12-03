@@ -1612,5 +1612,6 @@ class ContactController extends Controller
             return compact('contact_details','ob_due');
         
     }
+
     
 }
