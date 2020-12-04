@@ -100,7 +100,20 @@
       <div class="col-md-6">
         <div class="form-group">
           {!! Form::label('role', __( 'user.role' ) . ':*') !!} @show_tooltip(__('lang_v1.admin_role_location_permission_help'))
-            {!! Form::select('role', $roles, null, ['class' => 'form-control select2']); !!}
+            {!! Form::select('role', $roles, null, ['class' => 'form-control select2 role_change']); !!}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+        	<div id="servies"> 
+          <label for="service">Service:*</label>
+          <select name="service_id" id="service" class="form-control select2">
+            <option value="">select</option>
+                    
+          </select>
+          <!-- {!! Form::label('role', __( 'user.role' ) . ':*') !!} @show_tooltip(__('lang_v1.service'))
+            {!! Form::select('role', $service, null, ['class' => 'form-control select2']); !!} -->
+            </div>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -187,7 +200,26 @@
 {!! Form::close() !!}
   @stop
 @section('javascript')
+
 <script type="text/javascript">
+	$(document).ready(function() {
+		$('.role_change').change(function() { 
+			id = $('.role_change').val(); 
+      $.ajax({
+        method: "GET",
+        url: "{{ route('get_service') }}",
+        data: {
+            'id': id
+        },
+        dataType: "json",
+        success: function(result) {
+            $('#service').html(result);
+        }
+      });
+		});
+	});
+
+
   __page_leave_confirmation('#user_add_form');
   $(document).ready(function(){
     $('#selected_contacts').on('ifChecked', function(event){

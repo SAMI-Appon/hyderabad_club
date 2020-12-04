@@ -6,6 +6,7 @@ use App\BusinessLocation;
 use App\Contact;
 use App\System;
 use App\User;
+use App\Service;
 use App\Utils\ModuleUtil;
 use DB;
 use Illuminate\Http\Request;
@@ -107,14 +108,23 @@ class ManageUserController extends Controller
         $locations = BusinessLocation::where('business_id', $business_id)
                                     ->Active()
                                     ->get();
-
+        $service = Service::get();
         //Get user form part from modules
         $form_partials = $this->moduleUtil->getModuleData('moduleViewPartials', ['view' => 'manage_user.create']);
 
         return view('manage_user.create')
-                ->with(compact('roles', 'username_ext', 'contacts', 'locations', 'form_partials'));
+                ->with(compact('roles', 'username_ext', 'contacts', 'locations', 'form_partials','service'));
     }
-
+    public function get_service(Request $request){
+        $html = '<option value="">select</option>';
+        $service = Service::get();
+        if($request->id == 5){
+            foreach($service as $service){
+                $html .= '<option value="'.$service->id.'">'.$service->name.'</option>'; 
+            }
+        } 
+        echo json_encode($html); 
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -132,11 +142,14 @@ class ManageUserController extends Controller
                 'blood_group', 'contact_number', 'fb_link', 'twitter_link', 'social_media_1',
                 'social_media_2', 'permanent_address', 'current_address',
                 'guardian_name', 'custom_field_1', 'custom_field_2',
-                'custom_field_3', 'custom_field_4', 'id_proof_name', 'id_proof_number', 'cmmsn_percent', 'gender', 'max_sales_discount_percent']);
+                'custom_field_3', 'custom_field_4', 'id_proof_name', 'id_proof_number', 'cmmsn_percent', 'gender', 'max_sales_discount_percent', 'service_id']);
             
             $user_details['status'] = !empty($request->input('is_active')) ? 'active' : 'inactive';
-
-            $user_details['user_type'] = 'user';
+            if(!empty($request->service_id)){ 
+                $user_details['user_type'] = 'service_user';
+            }else{ 
+                $user_details['user_type'] = 'user';
+            } 
 
             if (empty($request->input('allow_login'))) {
                 unset($user_details['username']);
