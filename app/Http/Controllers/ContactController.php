@@ -59,6 +59,7 @@ class ContactController extends Controller
     public function index()
     { 
 
+        
         $type = request()->get('type');
 
         $types = ['supplier', 'customer'];
@@ -499,7 +500,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {    
-      // dd($request);
+       // dd($request);
 
         // \App\Helpers\CommonHelpers::uploadSingleFile($val, 'upload/documents/', 'png,gif,csv,jpeg,pdf,xls,xlsx,doc,docx,jpg');
 
