@@ -67,7 +67,7 @@ class AppUserController extends Controller
             endif;
 
             // Get customer
-            $customerGet = Contact::where('id', $customer_id)->first();
+            $customerGet = Contact::where('id', $customer_id)->select('first_name')->first();
 
             $data['customer_id'] = $customer_id;
             $data['user_id'] = $user_id;

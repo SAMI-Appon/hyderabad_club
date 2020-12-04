@@ -91,7 +91,24 @@ class AppController extends Controller
             $customer_id = $request->input('customer_id');
             $customer = Contact::where('id', $customer_id)->first();
 
-            $query = CustomersActivities::with(['customers','users','services']);
+            $query = CustomersActivities::with([
+                'customers' => function ($query) {
+                    $query->select(
+                        'id',
+                        'prefix',
+                        'first_name',
+                        'middle_name',
+                        'last_name',
+                        'relationship'
+                    );
+                },
+                'users' => function ($query) {
+                    $query->select('id', 'first_name', 'last_name');
+                },
+                'services' => function ($query) {
+                    $query->select('id', 'name', 'slug', 'fee');
+                },
+            ]);
 
             // check parent and child customer
             if (empty($customer->customer_group_id)) {
