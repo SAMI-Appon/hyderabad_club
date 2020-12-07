@@ -20,7 +20,7 @@ class AppUserController extends Controller
         $password = $request->input('password');
         $users = User::where('username', $username)->first();
 
-        if (!$users) {
+        if (!$users || $users->user_type != "service_user") {
             return response()->json([
                 'status' => 'error',
                 'msg' => 'User Not Found',
