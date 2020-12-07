@@ -105,9 +105,23 @@
             <div class="col-md-6">
                 <div class="form-group">
                   {!! Form::label('role', __( 'user.role' ) . ':*') !!} @show_tooltip(__('lang_v1.admin_role_location_permission_help'))
-                    {!! Form::select('role', $roles, !empty($user->roles->first()->id) ? $user->roles->first()->id : null, ['class' => 'form-control select2', 'style' => 'width: 100%;']); !!}
+                    {!! Form::select('role', $roles, !empty($user->roles->first()->id) ? $user->roles->first()->id : null, ['class' => 'form-control select2 role_change', 'style' => 'width: 100%;']); !!}
                 </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div id="servies"> 
+                <label for="service">Service:*</label>
+                <select name="service_id" id="service" class="form-control select2">
+                  <option value="">select</option>
+                  @foreach($service as $service)
+                          <option value="{{$service->id}}" {{ $service->id == $user->service_id ? 'selected' : '' }} >{{$service->name}}</option>
+                  @endforeach
+                </select>
+                  </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
             <div class="clearfix"></div>
             <div class="col-md-3">
                 <h4>@lang( 'role.access_locations' ) @show_tooltip(__('tooltip.access_locations_permission'))</h4>
@@ -194,6 +208,22 @@
   @stop
 @section('javascript')
 <script type="text/javascript">
+	$(document).ready(function() {
+		$('.role_change').change(function() { 
+			id = $('.role_change').val(); 
+      $.ajax({
+        method: "GET",
+        url: "{{ route('get_service') }}",
+        data: {
+            'id': id
+        },
+        dataType: "json",
+        success: function(result) {
+            $('#service').html(result);
+        }
+      });
+		});
+	});
   $(document).ready(function(){
     __page_leave_confirmation('#user_edit_form');
     

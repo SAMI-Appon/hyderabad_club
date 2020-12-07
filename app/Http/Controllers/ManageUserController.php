@@ -274,6 +274,7 @@ class ManageUserController extends Controller
         $user = User::where('business_id', $business_id)
                     ->with(['contactAccess'])
                     ->findOrFail($id);
+        $service = Service::get();
 
         $roles = $this->getRolesArray($business_id);
 
@@ -296,7 +297,7 @@ class ManageUserController extends Controller
         $form_partials = $this->moduleUtil->getModuleData('moduleViewPartials', ['view' => 'manage_user.edit', 'user' => $user]);
         
         return view('manage_user.edit')
-                ->with(compact('roles', 'user', 'contact_access', 'contacts', 'is_checked_checkbox', 'locations', 'permitted_locations', 'form_partials', 'username_ext'));
+                ->with(compact('roles', 'user', 'service', 'contact_access', 'contacts', 'is_checked_checkbox', 'locations', 'permitted_locations', 'form_partials', 'username_ext'));
     }
 
     /**
@@ -317,11 +318,15 @@ class ManageUserController extends Controller
                 'blood_group', 'contact_number', 'fb_link', 'twitter_link', 'social_media_1',
                 'social_media_2', 'permanent_address', 'current_address',
                 'guardian_name', 'custom_field_1', 'custom_field_2',
-                'custom_field_3', 'custom_field_4', 'id_proof_name', 'id_proof_number', 'cmmsn_percent', 'gender', 'max_sales_discount_percent']);
+                'custom_field_3', 'custom_field_4', 'id_proof_name', 'id_proof_number', 'cmmsn_percent', 'gender', 'max_sales_discount_percent','service_id']);
 
             $user_data['status'] = !empty($request->input('is_active')) ? 'active' : 'inactive';
             $business_id = request()->session()->get('user.business_id');
-
+            if(!empty($request->service_id)){ 
+                $user_details['user_type'] = 'service_user';
+            }else{ 
+                $user_details['user_type'] = 'user';
+            }
             if (!isset($user_data['selected_contacts'])) {
                 $user_data['selected_contacts'] = 0;
             }

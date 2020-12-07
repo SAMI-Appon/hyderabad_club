@@ -109,10 +109,7 @@
           <label for="service">Service:*</label>
           <select name="service_id" id="service" class="form-control select2">
             <option value="">select</option>
-                    
           </select>
-          <!-- {!! Form::label('role', __( 'user.role' ) . ':*') !!} @show_tooltip(__('lang_v1.service'))
-            {!! Form::select('role', $service, null, ['class' => 'form-control select2']); !!} -->
             </div>
         </div>
       </div>

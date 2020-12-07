@@ -49,7 +49,9 @@ class User extends Authenticatable
 
     public function scopeUser($query)
     {
-        return $query->where('users.user_type', 'user');
+        $query->where('users.user_type', 'user');
+        $query->orwhere('users.user_type', 'service_user');
+        return $query;
     }
 
     /**
