@@ -7,6 +7,7 @@ use App\User;
 use App\Contact;
 use App\CustomersActivities;
 use App\TransactionPayment;
+use App\Service;
 
 class AppUserController extends Controller
 {
@@ -31,6 +32,7 @@ class AppUserController extends Controller
         if ($Hash) {
             unset($users['password']);
             $data = $users;
+            $data['services'] =  Service::get();
 
             return response()->json([
                 'status' => 'success',
@@ -67,7 +69,8 @@ class AppUserController extends Controller
             endif;
 
             // Get customer
-            $customerGet = Contact::where('id', $customer_id)->select('first_name')->first();
+            $customerGet = Contact::where('id', $customer_id)->first();
+          
 
             $data['customer_id'] = $customer_id;
             $data['user_id'] = $user_id;

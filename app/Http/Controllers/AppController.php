@@ -7,6 +7,7 @@ use App\Contact;
 use App\TransactionPayment;
 use App\Events;
 use App\CustomersActivities;
+use App\Service;
 
 class AppController extends Controller
 {
@@ -15,7 +16,7 @@ class AppController extends Controller
     }
 
     public function login(Request $request)
-    { 
+    {
         $email = $request->input('email');
         $password = $request->input('password');
         $contact = Contact::where('email', $email)->first();
@@ -67,11 +68,7 @@ class AppController extends Controller
             $data['events'] = Events::where('end_date', '>=', date('YYYY-mm-dd'))
                 ->orWhere('forever', 1)
                 ->get('img');
-            // [
-            //     'uploads/events/placeholder-300x250.gif',
-            //     'uploads/events/placeholder-300x300.gif',
-            //     'uploads/events/placeholder-350x300.gif',
-            // ];
+            $data['services'] =  Service::get();
             $data['base_url'] = asset('/');
 
             return response()->json([
@@ -89,6 +86,9 @@ class AppController extends Controller
     {
         try {
             $customer_id = $request->input('customer_id');
+            $month_search = $request->input('month_search');
+            $month_date = explode('/', $month_search);
+
             $customer = Contact::where('id', $customer_id)->first();
 
             $query = CustomersActivities::with([
@@ -115,6 +115,13 @@ class AppController extends Controller
                 $query = $query->where('contact_id', $customer->contact_id);
             } else {
                 $query = $query->where('customer_id', $customer_id);
+            }
+
+            // Month Filter
+            if (!empty($month_search)) {
+                $query = $query
+                    ->whereYear('created_at', $month_date[1])
+                    ->whereMonth('created_at', $month_date[0]);
             }
 
             $CustomersActivityget = $query->latest()->get();
