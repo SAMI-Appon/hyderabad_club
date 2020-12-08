@@ -19,6 +19,7 @@ Route::middleware(['basicAuth'])->group(function () {
     
     Route::post('/login','AppController@login');
     Route::post('/get-activities','AppController@get_activity');
+    Route::post('/change-password','AppController@change_password');
 
 });
 

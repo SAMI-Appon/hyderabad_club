@@ -189,4 +189,31 @@ class AppController extends Controller
             : $contact_details->total_paid;
         return $arrayName = ['contact_details' => $contact_details, 'ob_due' => $ob_due];
     }
+    public function change_password(Request $request)
+    {
+        $user_id = $request->input('user_id');
+        $old_password = $request->input('old_password');
+        $contact = Contact::where('id', $user_id)->first();
+        if (!$contact) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'User Not Found',
+            ]);
+        }
+        $Hash = \Hash::check($old_password, $contact->password);
+        if ($Hash) {
+            Contact::where('id',$user_id)->update(['password' => \Hash::make($request->new_password)]);
+            return response()->json([
+                        "status" => 'success',
+                        'msg' => 'Your password has been changed',
+                    ]);
+            return response()->json($request->new_password); 
+        }else{
+            return response()->json([
+                        "status" => 'error',
+                        'msg' => 'Password is incorrect',
+                    ]);
+        } 
+        
+    }
 }
