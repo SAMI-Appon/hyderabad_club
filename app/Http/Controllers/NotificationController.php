@@ -9,12 +9,13 @@ use App\Notifications\CustomerNotification;
 use App\Notifications\SupplierNotification;
 use App\NotificationTemplate;
 use App\Restaurant\Booking;
-
 use App\Transaction;
 use App\Utils\NotificationUtil;
-
+use App\PushNotifications;
 use Illuminate\Http\Request;
-
+use App\Helpers\CommonHelpers;
+use Yajra\DataTables\Facades\DataTables;
+use App\Events;
 class NotificationController extends Controller
 {
     protected $notificationUtil;
@@ -175,5 +176,61 @@ class NotificationController extends Controller
         }
 
         return $output;
+    }
+    public function add_notification($value='')
+    {
+        $data = array(
+            'title' => 'Add Notification',
+            'user_data' => Contact::latest()->get(),
+        );
+        return view('notification.create')->with($data);
+    }
+    public function send_notification(Request $request)
+    {   
+        $user_token = '';
+        $user_token = [];
+        $push_notifications = [];
+        $now = date('y-m-d h:i:s');
+        if($request->user_id[0] == 'all'){
+            $users = Contact::latest()->get();
+            foreach ($users as $user_value) {
+                $push_notifications[] = array(
+                    'user_id' => $user_value->id,
+                    'title' => $request->title,
+                    'push_text' => $request->dec,
+                    'device_token' => $user_value,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                );
+            }
+        }else{
+            foreach ($request->user_id as $user_value) {
+                $push_notifications[] = array(
+                    'user_id' => $user_value,
+                    'title' => $request->title,
+                    'push_text' => $request->dec,
+                    'device_token' => $user_value,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                );
+            }
+        }    
+        PushNotifications::insert($push_notifications);
+        $output = ['success' => true, 'msg' => 'Notidication send succesfully', 'redirect' => 'add-notification'];
+        return $output;
+     //   CommonHelpers::pushNotification($request->title, $request->dec, 'simple', $user_token);
+    }
+    public function view_notification()
+    {
+        if (request()->ajax()) {
+            $cmd = PushNotifications::with('customers')->latest()->get();
+
+            return Datatables::of($cmd)
+            ->addColumn('date', function ($cmd) {
+                return $date = \App\Helpers\CommonHelpers::date_format_custom($cmd->created_at);
+            })
+                ->rawColumns(['date'])
+                ->make(true);
+        }
     }
 }

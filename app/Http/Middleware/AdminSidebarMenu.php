@@ -103,7 +103,7 @@ class AdminSidebarMenu
             }
 
             $menu->url(action('CommentController@index'), 'Comments', ['icon' => 'fa fas fa-comment-alt', 'active' => request()->segment(1) == 'comments'])->order(16);
-            $menu->url(action('EventController@index'), 'Events', ['icon' => 'fa fas fa-calendar-alt', 'active' => request()->segment(1) == 'events'])->order(16);
+            $menu->url(action('EventController@index'), 'Events', ['icon' => 'fa fas fa-calendar-alt', 'active' => request()->segment(1) == 'add-event'])->order(16);
 
             //Products dropdown
             if (auth()->user()->can('product.view') || auth()->user()->can('product.create') ||
@@ -620,6 +620,9 @@ class AdminSidebarMenu
             //Notification template menu
             if (auth()->user()->can('send_notifications')) {
                 $menu->url(action('NotificationTemplateController@index'), __('lang_v1.notification_templates'), ['icon' => 'fa fas fa-envelope', 'active' => request()->segment(1) == 'notification-templates'])->order(80);
+
+                $menu->url(action('NotificationController@add_notification'), __('Notification'), ['icon' => 'fa fas fa-bell', 'active' => request()->segment(1) == 'add-notification'])->order(80);
+
             }
 
             //Settings Dropdown

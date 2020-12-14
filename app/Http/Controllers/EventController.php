@@ -52,7 +52,7 @@ class EventController extends Controller
     public function add_event()
     {
         $data = array(
-            'title' => 'Search Customer',
+            'title' => 'Add Event',
         );
         return view('events.create')->with($data);
     }

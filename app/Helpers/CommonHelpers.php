@@ -592,4 +592,45 @@ class CommonHelpers
          $user_id = base64_decode($user_id);
          return $user_id / 2;
     }
+
+    public static function pushNotification($title, $body, $type = 'simple', $deviceToken)
+    {
+        $key = "AAAA4VoUzNY:APA91bFmjVrxAD85u9EJ61-1UfG1B8eCTtTczZF140OcH67gUE9NWCaMDp5xSvWg9NdUGJgziF0pDcuot6YAjM-vQ1YiMJge6nntl_ZhgpxIRJFlFlrsyswAQq2xYioExLqHgp179RyK";
+        $ch = curl_init("https://fcm.googleapis.com/fcm/send");
+
+        //The device token.
+        $token = $deviceToken; //token here is an array
+
+        //Creating the notification array.
+        $notification = array('title' => $title, 'message' => $body, 'sound' => 1, 'vibrate' => 1, 'type' => $type);
+
+        //This array contains, the token and the notification. The 'to' attribute stores the token.
+        $arrayToSend = array('registration_ids' => $token, 'data' => $notification, 'priority' => 'high');
+
+        //Generating JSON encoded string form the above array.
+        $json = json_encode($arrayToSend);
+        //Setup headers:
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Authorization: key= ' . $key; // key here
+
+        //Setup curl, add headers and post parameters.
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        //Send the request
+        $response = curl_exec($ch);
+        $err = curl_error($ch);
+
+        //Close request
+        curl_close($ch);
+
+        if ($err) {
+            return $err;
+        } else {
+            return $response;
+        }
+    }
 }

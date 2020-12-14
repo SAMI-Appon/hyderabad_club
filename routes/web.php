@@ -280,6 +280,9 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::resource('notification-templates', 'NotificationTemplateController')->only(['index', 'store']);
     Route::get('notification/get-template/{transaction_id}/{template_for}', 'NotificationController@getTemplate');
     Route::post('notification/send', 'NotificationController@send');
+    Route::get('view-notification',"NotificationController@view_notification")->name('view_notification');  
+    Route::get('add-notification','NotificationController@add_notification')->name('add_notification');  
+    Route::post('send-notification',"NotificationController@send_notification")->name('send_notification');  
 
     Route::post('/purchase-return/update', 'CombinedPurchaseReturnController@update');
     Route::get('/purchase-return/edit/{id}', 'CombinedPurchaseReturnController@edit');

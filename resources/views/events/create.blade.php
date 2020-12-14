@@ -56,7 +56,7 @@
                            <div class="col-md-6">
 		                     	<div class="form-group" style="margin-top: 27px;">
                                     <label for="barcode_type">Forever:*</label> &nbsp;&nbsp;
-                                    <input type="checkbox" class="input-icheck" name="forever" value="1" required {{ @$form_data->forever == 1 ? 'checked' : '' }}>
+                                    <input type="checkbox" class="input-icheck" name="forever" value="1"{{ @$form_data->forever == 1 ? 'checked' : '' }}>
                                 </div>
 		                   </div>
                            <div class="col-md-12">
