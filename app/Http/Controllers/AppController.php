@@ -10,7 +10,7 @@ use App\CustomersActivities;
 use App\Service;
 
 class AppController extends Controller
-{
+{ 
     public function __construct()
     {
     }

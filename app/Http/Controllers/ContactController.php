@@ -1614,5 +1614,38 @@ class ContactController extends Controller
         
     }
 
+
+    // function csvToArray($delimiter = ','){
+        
+    //     $filename = public_path('member_ship.csv');
+    //   if (!file_exists($filename) || !is_readable($filename))
+    //         return false;
+
+    //     $header = null;
+    //     $data = array();
+    //     if (($handle = fopen($filename, 'r')) !== false)
+    //     {   
+    //         $count =0;
+    //         while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
+    //         {
+    //             if (!$header)
+    //             $header = $row;
+    //         else
+    //             $data[] = @array_combine($header, $row);
+                
+               
+    //         }
+    //         fclose($handle);
+    //     }
+    //     echo '<pre>';
+    //     foreach($data as $key=>$val){
+    //         $data[$key]['is_import'] = 0;
+    //         $data[$key]['is_spouse'] = 0;
+    //         DB::table('import_data_table')->insert($data[$key]);
+    //     }
+        // print_r($data);
+       
+    }
+
     
 }
