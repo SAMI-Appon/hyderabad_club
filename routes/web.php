@@ -38,6 +38,13 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::get('/home/sales-payment-dues', 'HomeController@getSalesPaymentDues');
     
     Route::get('get-service', 'ManageUserController@get_service')->name('get_service');
+    //import routers
+    Route::get('/import-data','ImportData@index');
+    Route::get('/import-edit/{id}','importData@importEdit')->name('import.edit');
+    Route::post('/import-update/{id}','ImportData@importUpdate');
+    Route::get('/import-delete/{id}','ImportData@importDelete');
+    Route::get('/import-import/{id}','ImportData@import');
+    Route::get('/import-orderby/{id}','ImportData@orderBy');
 
 
     Route::get('/view-event','EventController@index')->name('view_event');
@@ -399,6 +406,11 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone'])
 
 Route::get('/monthly_pay', 'CronJobController@monthly_payment');
 
-// Route::get('/get_data', 'ContactController@csvToArray');
+Route::get('/get_data', 'ContactController@csvToArray');
 
-
+//detials of import_data_tables
+Route::get('/import-edit/{id}','importData@importEdit');
+Route::post('/import-update/{id}','ImportData@importUpdate');
+Route::get('/import-delete/{id}','ImportData@importDelete');
+// Route::get('export-members-data','ImportData@excelData');
+Route::get('/import-import/{id}','ImportData@import');

@@ -22,6 +22,7 @@ class AdminSidebarMenu
         }
 
         Menu::create('admin-sidebar-menu', function ($menu) {
+           // dd($menu);
             $enabled_modules = !empty(session('business.enabled_modules')) ? session('business.enabled_modules') : [];
             // dd($enabled_modules);
             //Home
@@ -76,19 +77,19 @@ class AdminSidebarMenu
                                 __('report.customer'),
                                 ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'customer']
                             );
+                            $sub->url(
+                                action('ImportData@index', []),
+                               'Import Customer',
+                                ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'import']
+                            );
                             // $sub->url(
                             //     action('CustomerGroupController@index'),
                             //     __('lang_v1.customer_groups'),
                             //     ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'customer-group']
                             // );
                         }
-                        if (auth()->user()->can('supplier.create') || auth()->user()->can('customer.create')) {
-                            // $sub->url(
-                            //     action('ContactController@getImportContacts'),
-                            //     __('lang_v1.import_contacts'),
-                            //     ['icon' => 'fa fas fa-download', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'import']
-                            // );
-                        }
+                        
+                       
 
                         if(!empty(env('GOOGLE_MAP_API_KEY'))) {
                             $sub->url(

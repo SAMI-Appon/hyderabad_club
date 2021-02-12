@@ -21,6 +21,8 @@ use DB;
 use Excel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\CommonHelpers;
+use App\import_data_table;
 
 
 class ContactController extends Controller
@@ -1615,37 +1617,107 @@ class ContactController extends Controller
     }
 
 
-    // function csvToArray($delimiter = ','){
+    function csvToArray(){
         
-    //     $filename = public_path('member_ship.csv');
-    //   if (!file_exists($filename) || !is_readable($filename))
-    //         return false;
+       $filename = public_path('spouse.csv'); 
+    //    echo $filename;
 
-    //     $header = null;
-    //     $data = array();
-    //     if (($handle = fopen($filename, 'r')) !== false)
-    //     {   
-    //         $count =0;
-    //         while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
-    //         {
-    //             if (!$header)
-    //             $header = $row;
-    //         else
-    //             $data[] = @array_combine($header, $row);
+      if (!file_exists($filename) || !is_readable($filename))
+            return false;
+
+        $header = null;
+        $data = array();
+        if (($handle = fopen($filename, 'r')) !== false)
+        {        
+           
+            $count =0;
+            while (($row = @fgetcsv($handle, 1000,',')) !== false)
+            {
+                          
+             if($count>1){
+                 $data[] = $row;
+             }
+            // $data[] = $row;
                 
-               
-    //         }
-    //         fclose($handle);
-    //     }
-    //     echo '<pre>';
-    //     foreach($data as $key=>$val){
-    //         $data[$key]['is_import'] = 0;
-    //         $data[$key]['is_spouse'] = 0;
-    //         DB::table('import_data_table')->insert($data[$key]);
-    //     }
-        // print_r($data);
+                $count=$count+1;
+            }
+            fclose($handle);
+        }
+        $import = new import_data_table;
+        
+        for($i=1;$i<count($data);$i++){
+            // 
+            //DB::table('import_data-_table')->insert()
+            //   if(isset($data[$i][2]) && !empty($data[$i][2])){
+            //     echo $data[0][4];
+            //     die();
+              // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][2],'CNICNO'=>$data[$i][3],'DateOfBirth'=>$data[$i][4],'Age'=>$data[$i][5],'BloodGroup'=>$data[$i][6],'is_import'=>0,'is_spouse'=>1]);
+              // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][7],'CNICNO'=>$data[$i][8],'DateOfBirth'=>$data[$i][9],'Age'=>$data[$i][10],'BloodGroup'=>$data[$i][11],'is_import'=>0,'is_spouse'=>1]); 
+              //die();  
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][2],'CNICNO'=>$data[$i][3],'DateOfBirth'=>$data[$i][4],'Age'=>$data[$i][5],'BloodGroup'=>$data[$i][6],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][7],'CNICNO'=>$data[$i][8],'DateOfBirth'=>$data[$i][9],'Age'=>$data[$i][10],'BloodGroup'=>$data[$i][11],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][12],'CNICNO'=>$data[$i][13],'DateOfBirth'=>$data[$i][14],'Age'=>$data[$i][15],'BloodGroup'=>$data[$i][16],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][17],'CNICNO'=>$data[$i][18],'DateOfBirth'=>$data[$i][19],'Age'=>$data[$i][20],'BloodGroup'=>$data[$i][21],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][22],'CNICNO'=>$data[$i][23],'DateOfBirth'=>$data[$i][24],'Age'=>$data[$i][25],'BloodGroup'=>$data[$i][26],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][27],'CNICNO'=>$data[$i][28],'DateOfBirth'=>$data[$i][29],'Age'=>$data[$i][30],'BloodGroup'=>$data[$i][31],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][32],'CNICNO'=>$data[$i][33],'DateOfBirth'=>$data[$i][34],'Age'=>$data[$i][35],'BloodGroup'=>$data[$i][36],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][37],'CNICNO'=>$data[$i][38],'DateOfBirth'=>$data[$i][39],'Age'=>$data[$i][40],'BloodGroup'=>$data[$i][41],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][42],'CNICNO'=>$data[$i][43],'DateOfBirth'=>$data[$i][44],'Age'=>$data[$i][45],'BloodGroup'=>$data[$i][46],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][47],'CNICNO'=>$data[$i][48],'DateOfBirth'=>$data[$i][49],'Age'=>$data[$i][50],'BloodGroup'=>$data[$i][51],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][52],'CNICNO'=>$data[$i][53],'DateOfBirth'=>$data[$i][54],'Age'=>$data[$i][55],'BloodGroup'=>$data[$i][56],'is_import'=>0,'is_spouse'=>1]);
+                // DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][57],'CNICNO'=>$data[$i][58],'DateOfBirth'=>$data[$i][59],'Age'=>$data[$i][60],'BloodGroup'=>$data[$i][61],'is_import'=>0,'is_spouse'=>1]);
+                
+                
+                // }
+            // if(isset($data[$i][2]) && !empty($data[$i][2])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][2],'CNICNO'=>$data[$i][3],'DateOfBirth'=>$data[$i][4],'Age'=>$data[$i][5],'BloodGroup'=>$data[$i][6],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][7]) && !empty($data[$i][7])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][7],'CNICNO'=>$data[$i][8],'DateOfBirth'=>$data[$i][9],'Age'=>$data[$i][10],'BloodGroup'=>$data[$i][11],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][12]) && !empty($data[$i][12])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][12],'CNICNO'=>$data[$i][13],'DateOfBirth'=>$data[$i][14],'Age'=>$data[$i][15],'BloodGroup'=>$data[$i][16],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][17]) && !empty($data[$i][17])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][17],'CNICNO'=>$data[$i][18],'DateOfBirth'=>$data[$i][19],'Age'=>$data[$i][20],'BloodGroup'=>$data[$i][21],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][22]) && !empty($data[$i][22])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][22],'CNICNO'=>$data[$i][23],'DateOfBirth'=>$data[$i][24],'Age'=>$data[$i][25],'BloodGroup'=>$data[$i][26],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][27]) && !empty($data[$i][27])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][27],'CNICNO'=>$data[$i][28],'DateOfBirth'=>$data[$i][29],'Age'=>$data[$i][30],'BloodGroup'=>$data[$i][31],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][32]) && !empty($data[$i][32])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][32],'CNICNO'=>$data[$i][33],'DateOfBirth'=>$data[$i][34],'Age'=>$data[$i][35],'BloodGroup'=>$data[$i][36],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][37]) && !empty($data[$i][37])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][37],'CNICNO'=>$data[$i][38],'DateOfBirth'=>$data[$i][39],'Age'=>$data[$i][40],'BloodGroup'=>$data[$i][41],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][42]) && !empty($data[$i][42])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][42],'CNICNO'=>$data[$i][43],'DateOfBirth'=>$data[$i][44],'Age'=>$data[$i][45],'BloodGroup'=>$data[$i][46],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][47]) && !empty($data[$i][47])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][47],'CNICNO'=>$data[$i][48],'DateOfBirth'=>$data[$i][49],'Age'=>$data[$i][50],'BloodGroup'=>$data[$i][51],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][52]) && !empty($data[$i][52])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][52],'CNICNO'=>$data[$i][53],'DateOfBirth'=>$data[$i][54],'Age'=>$data[$i][55],'BloodGroup'=>$data[$i][56],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // if(isset($data[$i][57]) && !empty($data[$i][57])){
+            //     DB::table('import_data_table')->insert(['MembershipID'=>$data[$i][0],'MembershipType'=>$data[$i][1],'Name'=>$data[$i][57],'CNICNO'=>$data[$i][58],'DateOfBirth'=>$data[$i][59],'Age'=>$data[$i][60],'BloodGroup'=>$data[$i][61],'is_import'=>0,'is_spouse'=>1]);
+            // }
+            // die();
+            // if(isset($data[$i][7]) && !empty($data[$i][2])){
+            //     echo $data[$i][7];
+            // }
+            // echo "<br>";
+            // if($i == 100)
+            // die();
+        }
+        
+     
        
+    
+    
     }
-
     
 }

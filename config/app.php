@@ -179,6 +179,7 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         App\Providers\DropboxServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -237,6 +238,7 @@ return [
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'Datatables' => Yajra\DataTables\Facades\DataTables::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ]
 ];

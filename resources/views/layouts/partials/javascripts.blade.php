@@ -61,6 +61,8 @@
         @if(config('app.debug') == false)
             $.fn.dataTable.ext.errMode = 'throw';
         @endif
+
+        
     });
     
     var financial_year = {
