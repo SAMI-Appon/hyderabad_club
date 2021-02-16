@@ -40,7 +40,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::get('get-service', 'ManageUserController@get_service')->name('get_service');
     //import routers
     Route::get('/import-data','ImportData@index');
-    Route::get('/import-edit/{id}','importData@importEdit')->name('import.edit');
+    Route::get('/import_edit/{id}','importData@importEdit');
     Route::post('/import-update/{id}','ImportData@importUpdate');
     Route::get('/import-delete/{id}','ImportData@importDelete');
     Route::get('/import-import/{id}','ImportData@import');

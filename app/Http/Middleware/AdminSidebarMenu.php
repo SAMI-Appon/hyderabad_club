@@ -22,7 +22,7 @@ class AdminSidebarMenu
         }
 
         Menu::create('admin-sidebar-menu', function ($menu) {
-           // dd($menu);
+           //dd($menu);
             $enabled_modules = !empty(session('business.enabled_modules')) ? session('business.enabled_modules') : [];
             // dd($enabled_modules);
             //Home

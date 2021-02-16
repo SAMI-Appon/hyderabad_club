@@ -19,6 +19,10 @@
                 <input type="text" class="form-control"   name="MembershipType" value="{{$data[0]->MembershipType}}">
             </div>
             <div class="form-group col-md-3">
+                <label>Type</label>
+                <input type="text" class="form-control"   name="type" value="{{$data[0]->type}}">
+            </div>
+            <div class="form-group col-md-3">
                 <label>Prefix</label>
                 <input type="text" class="form-control"   name="prefix" value="{{$data[0]->prefix}}">
             </div>
@@ -29,7 +33,6 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-3">
-            
                 <label>middle_name</label>
                 <input type="text" class="form-control"   name="middle_name" value="{{$data[0]->middle_name}}">
             </div>
@@ -45,6 +48,7 @@
                 <label>Gender</label>
                 <input type="text" class="form-control"   name="Gender" value="{{$data[0]->Gender}}">
             </div>
+            
         </div>
         <div class="form-row">
             <div class="form-group col-md-3">
@@ -74,8 +78,8 @@
                 <input type="text" class="form-control"   name="Profession" value="{{$data[0]->Profession}}">
             </div>
             <div class="form-group col-md-3">
-                <label>BScale</label>
-                <input type="text" class="form-control"   name="BScale" value="{{$data[0]->BScale}}">
+                <label>Supplier Business Name</label>
+                <input type="text" class="form-control"   name="supplier_business_name" value="{{$data[0]->supplier_business_name}}">
             </div>
             <div class="form-group col-md-3">
                 <label>PresentPosting</label>
@@ -92,7 +96,7 @@
                 <input type="text" class="form-control"   name="DateOfBirth" value="{{$data[0]->DateOfBirth}}">
             </div>
             <div class="form-group col-md-3">
-                <label>DateOfBirthInWords</label>
+                <label>Date Of Birth In Words</label>
                 <input type="text" class="form-control"   name="DateOfBirthInWords" value="{{$data[0]->DateOfBirthInWords}}">
             </div>
             <div class="form-group col-md-3">
@@ -102,8 +106,8 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-3">
-                <label>Education</label>
-                <input type="text" class="form-control"   name="Education" value="{{$data[0]->Education}}"> 
+                <label>Qualification</label>
+                <input type="text" class="form-control"   name="Education" value="{{$data[0]->Education}}" > 
             </div>
             <div class="form-group col-md-3">
                 <label>Address</label>
@@ -112,6 +116,18 @@
             <div class="form-group col-md-3">
                 <label>City</label>
                 <input type="text" class="form-control"   name="City" value="{{$data[0]->City}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>State</label>
+                <input type="text" class="form-control"   name="state" value="{{$data[0]->state}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Country</label>
+                <input type="text" class="form-control"   name="country" value="{{$data[0]->country}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Zip Code</label>
+                <input type="text" class="form-control"   name="zipcode" value="{{$data[0]->zipcode}}">
             </div>
             <div class="form-group col-md-3">
                 <label>AddressSince</label>
@@ -135,11 +151,27 @@
                 <label>MobileNo</label>
                 <input type="text" class="form-control"   name="MobileNo" value="{{$data[0]->MobileNo}}">
             </div>
+            <div class="form-group col-md-3">
+                <label>Landline</label>
+                <input type="text" class="form-control"   name="landline" value="{{$data[0]->landline}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Alternate Number</label>
+                <input type="text" class="form-control"   name="alternate_number" value="{{$data[0]->alternate_number}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Tax No</label>
+                <input type="text" class="form-control"   name="tax_number" value="{{$data[0]->tax_number}}">
+            </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-3">
                 <label>Email</label>
                 <input type="text" class="form-control"   name="Email" value="{{$data[0]->Email}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Password</label>
+                <input type="password" class="form-control"   name="password" value="{{$data[0]->password}}">
             </div>
             <div class="form-group col-md-3">
                 <label>Proposer1Name</label>
@@ -148,10 +180,6 @@
             <div class="form-group col-md-3">
                 <label>Proposer1MembershipNo</label>
                 <input type="text" class="form-control"   name="Proposer1MembershipNo" value="{{$data[0]->Proposer1MembershipNo}}">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Proposer1PhoneNo</label>
-                <input type="text" class="form-control"   name="Proposer1PhoneNo" value="{{$data[0]->Proposer1PhoneNo}}">
             </div>
         </div>
         <div class="form-row">
@@ -210,15 +238,15 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-3">
-                <label>Closing_No</label>
+                <label>Closing No</label>
                 <input type="text" class="form-control"   name="Closing_No" value="{{$data[0]->Closing_No}}">
             </div>
             <div class="form-group col-md-3">
-                <label>ClosingDate</label>
+                <label>Closing Date</label>
                 <input type="text" class="form-control"   name="ClosingDate" value="{{$data[0]->ClosingDate}}">
             </div>
             <div class="form-group col-md-3">
-                <label>Closing_Remarks</label>
+                <label>Closing Remarks</label>
                 <input type="text" class="form-control"   name="Closing_Remarks" value="{{$data[0]->Closing_Remarks}}">
             </div>
             <div class="form-group col-md-3">
@@ -228,23 +256,61 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-3">
-                <label>Termination_Remarks</label>
+                <label>Termination Remarks</label>
                 <input type="text" class="form-control"   name="Termination_Remarks" value="{{$data[0]->Termination_Remarks}}">
             </div>
             <div class="form-group col-md-3">
                 <label>Relationship</label>
-                <input type="text" class="form-control"   name="relationship" value="{{$data[0]->relationship}}">
+                {{-- <input type="text" class="form-control"   name="relationship" value="{{$data[0]->relationship}}"> --}}
+                <div class="form-group">
+                    <select class="form-control" name="relationship">
+                        <option value="">Select Relation</option>
+                        <option value="spouse" <?php if($data[0]->relationship == 'spouse') echo "selected"; ?>>Spouse</option>
+                        <option value="son" <?php if($data[0]->relationship == 'son') echo "selected"; ?>>Son</option>
+                        <option value="daughter" <?php if($data[0]->relationship == 'daughter') echo "selected"; ?>>Daughter</option>
+                        <option value="parent" <?php if($data[0]->relationship == 'parent') echo "selected"; ?>>Parent</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group col-md-3">
-                <label>is_import</label>
+                <label>Propoer 1 Signature</label>
+                <input type="file" class="form-control-file"   name="Proposer1Signature" value="">
+                @if(file_exists($data[0]->Proposer1Signature))
+                <img src="{{asset($data[0]->Proposer1Signature)}}" alt="" width="50%" height="100px">
+                <input type="hidden" value="{{$data[0]->Proposer1Signature}}" name="OldProposer1Signature">
+                @endif
+            </div>
+            <div class="form-group col-md-3">
+                <label>Propoer 2 Signature</label>
+                <input type="file" class="form-control-file"   name="Proposer2Signature" value="">
+                @if(file_exists($data[0]->Proposer2Signature))
+                <img src="{{asset($data[0]->Proposer2Signature)}}" alt="" width="50%" height="100px">
+                <input type="hidden" value="{{$data[0]->Proposer2Signature}}" name="OldProposer2Signature">
+                @endif
+            </div>
+            {{-- <div class="form-group col-md-3">
+                <label>is_import</label>`
                 <input type="text" class="form-control"   name="is_import" value="{{$data[0]->is_import}}">
             </div>
             <div class="form-group col-md-3">
                 <label>is_spouse</label>
                 <input type="text" class="form-control"   name="is_spouse" value="{{$data[0]->is_spouse}}">
-            </div>    
+            </div>     --}}
+            <div class="form-group col-md-3">
+                <label>Image</label>
+                <input type="file" class="form-control-file"   name="image" value="">
+                @if(file_exists($data[0]->image))
+                <img src="{{asset($data[0]->image)}}" alt="" width="50%" height="100px">
+                <input type="hidden" value="{{$data[0]->image}}" name="old_image">
+                @endif
+            </div>
+            <div class="row">
+            <div class="form-group col-md-10" style="margin-left:20px">
+                <input type="submit" class="btn btn-primary" value="Update">
+            </div>
+            </div>
         </div>
-        <div class="form-row">
+        {{-- <div class="form-row">
             <div class="form-group col-md-3">
                 <label>Image</label>
                 <input type="file" class="form-control-file"   name="image" value="">
@@ -257,14 +323,13 @@
             </div>
             <div class="form-group col-md-3"></div>
             <div class="form-group col-md-3"></div>     
-        </div> 
-        <div>
+        </div>  --}}
+        {{-- <div class="col-sm-12 float-right">
             <input type="submit" class="btn btn-primary" value="Update">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12"></div>
-        </div> 
-        <br>       
+        </div> --}}
+      <div class="row">
+        <div class="col-md-12"></div>      
+     </div>      
       
            
     </form>
