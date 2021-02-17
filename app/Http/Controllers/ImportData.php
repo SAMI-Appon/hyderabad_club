@@ -18,7 +18,8 @@ class ImportData extends Controller
     public function import($id){
         $data = DB::table('import_data_table')->where('id',$id)->get();
         $n = $data ;
-        //generating QR code
+        
+        // //generating QR code
         $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($data[0]->id);
         $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$data[0]->id.'-'.$data[0]->id.'-'.date('YmdHis').'.png');
         
@@ -72,81 +73,71 @@ class ImportData extends Controller
             'qr_code'               =>  $qr_code,
             'created_by'            =>  1
         );
-
+        //check if any parent field is empty then redirect back
         foreach($contact AS $data){
             if($data == "" OR empty($data)){
-                return redirect()->back()->with('msg','Please fill all fields');
+                return redirect()->back()->with('msg','Please fill all fields of membersipID '.$contact['contact_id']);
             }
         }
         
-        DB::table('contacts')->insert($contact);
-        DB::table('import_data_table')->where('id',$id)->update(['is_import'=>1]);
+        DB::table('contacts')->insert($contact);//insert data in contact
+        DB::table('import_data_table')->where('id',$id)->update(['is_import'=>1]);//set import 1
 
         
-        
-        $new_data = DB::table('import_data_table')->where('MembershipID',$n[0]->MembershipID)->where('is_spouse',1)->get();
-        dd($new_data);
+       //get the spouse data by parent membership ID
+        $new_data = DB::table('import_data_table')->where('MembershipID',(int)$n[0]->MembershipID)->where('is_spouse',1)->get();
+
         foreach($new_data AS $spouse_data){
+            if(!empty($spouse_data->Name)){
             
-            $new_s=  \App\Helpers\CommonHelpers:: encrypt_user_id($spouse_data->id);
-            $new_qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($new_s,$spouse_data->id.'-'.$spouse_data->id.'-'.date('YmdHis').'.png');
+                $new_s=  \App\Helpers\CommonHelpers:: encrypt_user_id($spouse_data->id);
+                $new_qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($new_s,$spouse_data->id.'-'.$spouse_data->id.'-'.date('YmdHis').'.png');
 
-            $array = array(
+                $array = array(
+                    'business_id'    => 1,
+                    'prefix'         => $spouse_data->prefix,
+                    'type'           =>'customer',
+                    'first_name'     => $spouse_data->first_name,
+                    'middle_name'    => $spouse_data->middle_name,
+                    'last_name'      => $spouse_data->last_name,
+                    'name'           => $spouse_data->Name,
+                    'marital_status' => $spouse_data->MaritalStatus,
+                    'relationship'   => $spouse_data->relationship,
+                    'dob'            => $spouse_data->DateOfBirth,
+                    'email'          => $spouse_data->Email,
+                    'qualification'  => $spouse_data->Education,
+                    'mobile'         => $spouse_data->MobileNo,
+                    'image'          => $spouse_data->image,
+                    //'id'            => $spouse_data->id,
+                    'created_by'     =>  1,
+                    'contact_id'     => $contact['contact_id']//parent membership ID
+                );
 
-                'prefix'        => $new_data['prefix'],
-                'type'          =>'customer',
-                'first_name'    => $new_data['first_name'],
-                'middle_name'   => $new_data['middle_name'],
-                'last_name'     => $new_data['last_name'],
-                'Name'          => $new_data['Name'],
-                'MaritalStatus' => $new_data['MaritalStatus'],
-                'relationship'  => $new_data['relationship'],
-                'DateOfBirth'   => $new_data['DateOfBirth'],
-                'Email'         => $new_data['Email'],
-                'Education'     => $new_data['Education'],
-                'MobileNo'      => $new_data['MobileNo'],
-                'image'         => $new_data['image'],
-                'id'            =>$new_data['id']
-            );
-            if($array == "" OR empty($array)){
-                return redirect()->back()->with('msg','Please fill all fields');
-            }
-
-             DB::table('contacts')->insert($array);
-             DB::table('import_data_table')->where('id',$array['id'])->update(['is_import'=>1]);
+               DB::table('contacts')->insert($array);//insert record in contact
+               DB::table('import_data_table')->where('id',$spouse_data->id)->update(['is_import'=>1]);//set import 1
+            }   
         }
-        
         
         return redirect('/import-data')->with('msg','Data Has Been Imported To Contacts');
     }
 
     public function importEdit($id){
         $data = DB::table('import_data_table')->where('id',$id)->first();
-        $spouse = DB::table('import_data_table')->where('MembershipID',(int)$data->MembershipID)->where('is_spouse',1)->get();
+        $spouses = DB::table('import_data_table')->where('MembershipID',(int)$data->MembershipID)->where('is_spouse',1)->get();
     
-        return view('import_data.import_edit')->with(compact('data','spouse'));
+        return view('import_data.import_edit')->with(compact('data','spouses'));
     }
 
     public function importUpdate(Request $req,$id){
-        
         $data = $req->all();
-        //    echo '<pre>';
-        //    print_r($data['family'][0]);
-        //    exit();
-
         foreach($data['family'] AS $key=>$val){            
            
             if(@$data['family'][$key]['image']){
-             $data['family'][$key]['image'] =  \App\Helpers\CommonHelpers::uploadSingleFile($data['family'][$key]['image'], 'upload/import_data_table_images/', 'png,gif,jpeg,jpg');
-                
+                 $data['family'][$key]['image'] =  \App\Helpers\CommonHelpers::uploadSingleFile($data['family'][$key]['image'], 'upload/import_data_table_images/', 'png,gif,jpeg,jpg');
                  DB::table('import_data_table')->where('id',$data['family'][$key]['ID'])->update(['prefix'=>$data['family'][$key]['prefix'],'first_name'=>$data['family'][$key]['first_name'],'middle_name'=>$data['family'][$key]['middle_name'],'last_name'=>$data['family'][$key]['last_name'],'Name'=>$data['family'][$key]['Name'],'MaritalStatus'=>$data['family'][$key]['MaritalStatus'],'relationship'=>$data['family'][$key]['relationship'],'DateOfBirth'=>$data['family'][$key]['DateOfBirth'],'Email'=>$data['family'][$key]['Email'],'Education'=>$data['family'][$key]['Education'],'MobileNo'=>$data['family'][$key]['MobileNo'],'image'=>$data['family'][$key]['image']]);
-
             }else{
-               
                 DB::table('import_data_table')->where('id',$data['family'][$key]['ID'])->update(['prefix'=>$data['family'][$key]['prefix'],'first_name'=>$data['family'][$key]['first_name'],'middle_name'=>$data['family'][$key]['middle_name'],'last_name'=>$data['family'][$key]['last_name'],'Name'=>$data['family'][$key]['Name'],'MaritalStatus'=>$data['family'][$key]['MaritalStatus'],'relationship'=>$data['family'][$key]['relationship'],'DateOfBirth'=>$data['family'][$key]['DateOfBirth'],'Email'=>$data['family'][$key]['Email'],'Education'=>$data['family'][$key]['Education'],'MobileNo'=>$data['family'][$key]['MobileNo']]);
             }  
-
-
         }
           
         
@@ -182,30 +173,39 @@ class ImportData extends Controller
     }
 
     public function importDelete($id){
-        DB::table('import_data_table')->where('id',$id)->delete();
-        return redirect('import-data')->with('msg','Data Has Been Deleted');
+        //getting membersgip ID by using parent ID
+        $id = DB::table('import_data_table')->where('id',$id)->first();
+        //getting the membvership ID so we can delete all the records based on Membersip ID
+        $MembershipID = DB::table('import_data_table')->where('MembershipID',$id->MembershipID)->get();
+        
+        
+        foreach($MembershipID AS $id){
+            DB::table('import_data_table')->where('MembershipID',$id->MembershipID)->delete();
+        }
+
+         return redirect('/import-data')->with('msg','Record has been Deleted');
     }
 
-    public function orderBy($id){
-        if(isset($id) && $id == 'spouse'){
+    // public function orderBy($id){
+    //     if(isset($id) && $id == 'spouse'){
             
-            $details = DB::table('import_data_table')->where('is_spouse',1)->where('is_import',0)->paginate('300');
-            $order_by = "Order By Spouse/Child";
-            return view('import_data.import_data')->with(compact('details','order_by'));
+    //         $details = DB::table('import_data_table')->where('is_spouse',1)->where('is_import',0)->paginate('300');
+    //         $order_by = "Order By Spouse/Child";
+    //         return view('import_data.import_data')->with(compact('details','order_by'));
         
-        }elseif(isset($id) && $id == 'import'){
+    //     }elseif(isset($id) && $id == 'import'){
             
-            $details = DB::table('import_data_table')->where('is_import',1)->paginate('300');
-            $order_by = "Order By Imported";
-            return view('import_data.import_data')->with(compact('details','order_by'));
+    //         $details = DB::table('import_data_table')->where('is_import',1)->paginate('300');
+    //         $order_by = "Order By Imported";
+    //         return view('import_data.import_data')->with(compact('details','order_by'));
         
-        }elseif(isset($id) && $id == 'parents'){
+    //     }elseif(isset($id) && $id == 'parents'){
             
-            $details = DB::table('import_data_table')->where('is_spouse',0)->where('is_import',0)->paginate('300');
-            $order_by = "Order By Parents";
-            return view('import_data.import_data')->with(compact('details','order_by'));
+    //         $details = DB::table('import_data_table')->where('is_spouse',0)->where('is_import',0)->paginate('300');
+    //         $order_by = "Order By Parents";
+    //         return view('import_data.import_data')->with(compact('details','order_by'));
         
-        }
-        return redirect('/import-data');
-    }
+    //     }
+    //     return redirect('/import-data');
+    // }
 }
