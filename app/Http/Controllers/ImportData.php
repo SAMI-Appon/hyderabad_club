@@ -81,11 +81,9 @@ class ImportData extends Controller
         
         DB::table('contacts')->insert($contact);
         DB::table('import_data_table')->where('id',$id)->update(['is_import'=>1]);
-
-        
         
         $new_data = DB::table('import_data_table')->where('MembershipID',$n[0]->MembershipID)->where('is_spouse',1)->get();
-        dd($new_data);
+        // dd($new_data);
         foreach($new_data AS $spouse_data){
             
             $new_s=  \App\Helpers\CommonHelpers:: encrypt_user_id($spouse_data->id);
