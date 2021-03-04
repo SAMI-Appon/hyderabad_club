@@ -396,7 +396,12 @@
     @endif
     <?php ++$i; ?>
     @endforeach
-    <input type="submit" value="Update" class="btn btn-primary">
+        <div class="row">
+            <div class="col-md-12" style="padding-left: 30px; margin-bottom: 20px;">
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+        </div>
+
     </div>
 </form>
 @endsection

@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\import_data_table;
+use App\ImportContact;
 use Illuminate\Support\Facades\Hash;
 
-class ImportData extends Controller
+class ImportContactController extends Controller
 {
     public function index(){
         $details = DB::table('import_data_table')->where('is_import',0)->where('is_spouse',0)->paginate('300');
@@ -20,13 +20,14 @@ class ImportData extends Controller
         $n = $data ;
         
         // //generating QR code
-        $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($data[0]->id);
-        $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$data[0]->id.'-'.$data[0]->id.'-'.date('YmdHis').'.png');
+         $s=  \App\Helpers\CommonHelpers:: encrypt_user_id($data[0]->id);
+          $qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($s,$data[0]->id.'-'.$data[0]->id.'-'.date('YmdHis').'.png');
         
         $contact = array(
             'business_id'           => 1,
             'type'                  => 'customer',
             'name'                  => $data[0]->Name,
+            'qr_code'               => $qr_code,
             'signature_proposer'    => $data[0]->Proposer1Signature,
             'signature_seconder'    => $data[0]->Proposer2Signature,
             // 'type'                  => $data[0]->type,
@@ -70,7 +71,7 @@ class ImportData extends Controller
             'age'                   => $data[0]->Age,
             'MembershipType'        => $data[0]->MembershipType,
             'CNIC'                  => $data[0]->CNICNO,
-            'qr_code'               =>  $qr_code,
+            // 'qr_code'               =>  $qr_code,
             'created_by'            =>  1
         );
         //check if any parent field is empty then redirect back
@@ -82,16 +83,21 @@ class ImportData extends Controller
         
         DB::table('contacts')->insert($contact);//insert data in contact
         DB::table('import_data_table')->where('id',$id)->update(['is_import'=>1]);//set import 1
-
+        
+        $f = $n[0]->MembershipID;
+        if(is_numeric($f[0])){
+           $f =  (int)$n[0]->MembershipID;;
+        }
+            
         
        //get the spouse data by parent membership ID
-        $new_data = DB::table('import_data_table')->where('MembershipID',(int)$n[0]->MembershipID)->where('is_spouse',1)->get();
+        $new_data = DB::table('import_data_table')->where('MembershipID',$f)->where('is_spouse',1)->get();
 
         foreach($new_data AS $spouse_data){
             if(!empty($spouse_data->Name)){
             
-                $new_s=  \App\Helpers\CommonHelpers:: encrypt_user_id($spouse_data->id);
-                $new_qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($new_s,$spouse_data->id.'-'.$spouse_data->id.'-'.date('YmdHis').'.png');
+                 $new_s=  \App\Helpers\CommonHelpers:: encrypt_user_id($spouse_data->id);
+                 $new_qr_code = \App\Helpers\CommonHelpers::qrcode_genrate($new_s,$spouse_data->id.'-'.$spouse_data->id.'-'.date('YmdHis').'.png');
 
                 $array = array(
                     'business_id'    => 1,
@@ -110,7 +116,8 @@ class ImportData extends Controller
                     'image'          => $spouse_data->image,
                     //'id'            => $spouse_data->id,
                     'created_by'     =>  1,
-                    'contact_id'     => $contact['contact_id']//parent membership ID
+                    'contact_id'     => $contact['contact_id'],//parent membership ID
+                    'qr_code'        =>  $new_qr_code,
                 );
 
                DB::table('contacts')->insert($array);//insert record in contact
@@ -123,21 +130,30 @@ class ImportData extends Controller
 
     public function importEdit($id){
         $data = DB::table('import_data_table')->where('id',$id)->first();
-        $spouses = DB::table('import_data_table')->where('MembershipID',(int)$data->MembershipID)->where('is_spouse',1)->get();
+        $f = $data->MembershipID;
+        if(is_numeric($f[0])){
+           $f =  (int)$data->MembershipID;;
+        }
+            
+        
+        $spouses = DB::table('import_data_table')->where('MembershipID',$f)->where('is_spouse',1)->get();
     
         return view('import_data.import_edit')->with(compact('data','spouses'));
     }
 
     public function importUpdate(Request $req,$id){
         $data = $req->all();
-        foreach($data['family'] AS $key=>$val){            
+        if(isset($data['family'])){
+            
+            foreach($data['family'] AS $key=>$val){            
            
             if(@$data['family'][$key]['image']){
                  $data['family'][$key]['image'] =  \App\Helpers\CommonHelpers::uploadSingleFile($data['family'][$key]['image'], 'upload/import_data_table_images/', 'png,gif,jpeg,jpg');
                  DB::table('import_data_table')->where('id',$data['family'][$key]['ID'])->update(['prefix'=>$data['family'][$key]['prefix'],'first_name'=>$data['family'][$key]['first_name'],'middle_name'=>$data['family'][$key]['middle_name'],'last_name'=>$data['family'][$key]['last_name'],'Name'=>$data['family'][$key]['Name'],'MaritalStatus'=>$data['family'][$key]['MaritalStatus'],'relationship'=>$data['family'][$key]['relationship'],'DateOfBirth'=>$data['family'][$key]['DateOfBirth'],'Email'=>$data['family'][$key]['Email'],'Education'=>$data['family'][$key]['Education'],'MobileNo'=>$data['family'][$key]['MobileNo'],'image'=>$data['family'][$key]['image']]);
             }else{
                 DB::table('import_data_table')->where('id',$data['family'][$key]['ID'])->update(['prefix'=>$data['family'][$key]['prefix'],'first_name'=>$data['family'][$key]['first_name'],'middle_name'=>$data['family'][$key]['middle_name'],'last_name'=>$data['family'][$key]['last_name'],'Name'=>$data['family'][$key]['Name'],'MaritalStatus'=>$data['family'][$key]['MaritalStatus'],'relationship'=>$data['family'][$key]['relationship'],'DateOfBirth'=>$data['family'][$key]['DateOfBirth'],'Email'=>$data['family'][$key]['Email'],'Education'=>$data['family'][$key]['Education'],'MobileNo'=>$data['family'][$key]['MobileNo']]);
-            }  
+             }  
+            }
         }
           
         
