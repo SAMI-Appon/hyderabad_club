@@ -18,10 +18,10 @@
             <label>Membership Type</label>
             <input type="text" class="form-control" name="parent[MembershipType]" value="{{$data->MembershipType}}">
         </div>
-        <div class="form-group col-md-3">
+        {{-- <div class="form-group col-md-3">
             <label>Type</label>
             <input type="text" class="form-control" name="parent[type]" value="{{$data->type}}">
-        </div>
+        </div> --}}
         <div class="form-group col-md-3">
             <label>Prefix</label>
             <input type="text" class="form-control" name="parent[prefix]" value="{{$data->prefix}}">
@@ -186,6 +186,10 @@
             <input type="text" class="form-control" name="parent[Proposer1MembershipNo]"
                 value="{{$data->Proposer1MembershipNo}}">
         </div>
+        <div class="form-group col-md-3">
+            <label>Proposer1PhoneNo</label>
+            <input type="text" class="form-control" name="parent[Proposer1PhoneNo]"  value="{{$data->Proposer1PhoneNo}}">
+        </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-3">
@@ -272,13 +276,8 @@
             {{-- <input type="text" class="form-control"   name="relationship" value="{{$data->relationship}}"> --}}
             <div class="form-group">
                 <select class="form-control" name="parent[relationship]">
-                    <option value="">Select Relation</option>
-                    <option value="spouse" <?php if($data->relationship == 'spouse') echo "selected"; ?>>Spouse
-                    </option>
-                    <option value="son" <?php if($data->relationship == 'son') echo "selected"; ?>>Son</option>
-                    <option value="daughter" <?php if($data->relationship == 'daughter') echo "selected"; ?>>Daughter
-                    </option>
-                    <option value="parent" <?php if($data->relationship == 'parent') echo "selected"; ?>>Parent
+
+                    <option value="parent" <?php //if($data->relationship == 'parent') echo "selected"; ?>>Parent
                     </option>
                 </select>
             </div>
@@ -317,9 +316,11 @@
     </div>
     </div>
     <div class="form-row">
-        @for($i=0; $i<12; $i++) 
-        
-    
+        {{-- @for($i=0; $i<12; $i++)  --}}
+    <?php $i = 0; ?> 
+    @foreach($spouses AS $spouse)
+  
+    @if(!empty($spouse->Name) || !empty($spouse->DateOfBirth))
     <div class="form-group col-md-12">
      Famaliy Members
     </div>
@@ -327,72 +328,80 @@
     <div class="form-row">
         <div class="col-md-3">
             <label>Prefix</label>
-            <input type="text" class="form-control" name="family[{{$i}}][prefix]" value="{{$spouse[$i]->prefix}}">
+            <input type="text" class="form-control" name="family[{{$i}}][prefix]" value="{{$spouse->prefix}}">
         </div>
         <div class="col-md-3">
             <label>First Name</label>
-            <input type="text" class="form-control" name="family[{{$i}}][first_name]" value="{{$spouse[$i]->first_name}}">
+            <input type="text" class="form-control" name="family[{{$i}}][first_name]" value="{{$spouse->first_name}}">
         </div>
         <div class="col-md-3">
             <label>Middle Name</label>
-            <input type="text" class="form-control" name="family[{{$i}}][middle_name]" value="{{$spouse[$i]->middle_name}}">
+            <input type="text" class="form-control" name="family[{{$i}}][middle_name]" value="{{$spouse->middle_name}}">
         </div>
         <div class="col-md-3">
             <label>Last Name</label>
-            <input type="text" class="form-control" name="family[{{$i}}][last_name]" value="{{$spouse[$i]->last_name}}">
+            <input type="text" class="form-control" name="family[{{$i}}][last_name]" value="{{$spouse->last_name}}">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-3">
             <label>Name</label>
-            <input type="text" class="form-control" name="family[{{$i}}][Name]" value="{{$spouse[$i]->Name}}">
+            <input type="text" class="form-control" name="family[{{$i}}][Name]" value="{{$spouse->Name}}">
         </div>
         <div class="form-group col-md-3">
             <label>Marital Status</label>
-            <input type="text" class="form-control" name="family[{{$i}}][MaritalStatus]" value="{{$spouse[$i]->MaritalStatus}}">
+            <input type="text" class="form-control" name="family[{{$i}}][MaritalStatus]" value="{{$spouse->MaritalStatus}}">
         </div>
         <div class="form-group col-md-3">
             <label>Relationship</label>
             <select class="form-control" name="family[{{$i}}][relationship]">
                 <option value="">Select Relation</option>
-                <option value="spouse">Spouse</option>
-                <option value="son">Son</option>
-                <option value="daughter">Daughter</option>
+                <option value="spouse" <?php if($spouse->relationship == 'spouse') echo "selected"?>>Spouse</option>
+                <option value="son" <?php if($spouse->relationship == 'son') echo "selected"?>>Son</option>
+                <option value="daughter" <?php if($spouse->relationship == 'daughter') echo "selected"?>>Daughter</option>
             </select>
         </div>
         <div class="form-group col-md-3">
             <label>Date Of Birth</label>
-            <input type="text" class="form-control" name="family[{{$i}}][DateOfBirth]" value="{{$spouse[$i]->DateOfBirth}}">
+            <input type="text" class="form-control" name="family[{{$i}}][DateOfBirth]" value="{{$spouse->DateOfBirth}}">
         </div>
 
     </div>
     <div class="form-row">
         <div class="form-group col-md-3">
             <label>Email</label>
-            <input type="text" class="form-control" name="family[{{$i}}][Email]" value="{{$spouse[$i]->Email}}">
+            <input type="text" class="form-control" name="family[{{$i}}][Email]" value="{{$spouse->Email}}">
         </div>
         <div class="form-group col-md-3">
             <label>Qualification</label>
-            <input type="text" class="form-control" name="family[{{$i}}][Education]" value="{{$spouse[$i]->Education}}">
+            <input type="text" class="form-control" name="family[{{$i}}][Education]" value="{{$spouse->Education}}">
         </div>
        
     <div class="form-group col-md-3">
         <label>Mobile No</label>
-        <input type="text" class="form-control" name="family[{{$i}}][MobileNo]" value="{{$spouse[$i]->MobileNo}}">
+        <input type="text" class="form-control" name="family[{{$i}}][MobileNo]" value="{{$spouse->MobileNo}}">
     </div>
     <div class="form-group col-md-3">
         <label>Photo</label>
         <input type="file" class="form-control-file" name="family[{{$i}}][image]">
-        @if(file_exists($spouse[$i]->image))
-        <img src="{{asset($spouse[$i]->image)}}" alt="" width="50%" height="100px">
+        @if(file_exists($spouse->image))
+        <img src="{{asset($spouse->image)}}" alt="" width="50%" height="100px">
         @endif
-        <input type="hidden" value="{{@$spouse[$i]->image}}" name="family[{{$i}}][old_images]">
+        <input type="hidden" value="{{@$spouse->image}}" name="family[{{$i}}][old_images]">
 
     </div>
-    <input type="hidden" value={{$spouse[$i]->id}} name="family[{{$i}}][ID]">
+    <input type="hidden" value={{$spouse->id}} name="family[{{$i}}][ID]">
     </div>
-    @endfor
-    <input type="submit" value="Update" class="btn btn-primary">
+    {{-- @endfor --}}
+    @endif
+    <?php ++$i; ?>
+    @endforeach
+        <div class="row">
+            <div class="col-md-12" style="padding-left: 30px; margin-bottom: 20px;">
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+        </div>
+
     </div>
 </form>
 @endsection

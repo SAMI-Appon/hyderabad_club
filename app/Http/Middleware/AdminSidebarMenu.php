@@ -78,7 +78,7 @@ class AdminSidebarMenu
                                 ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'customer']
                             );
                             $sub->url(
-                                action('ImportData@index', []),
+                                action('ImportContactController@index', []),
                                'Import Customer',
                                 ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'import']
                             );
