@@ -81,6 +81,13 @@ class ImportContactController extends Controller
             }
         }
         
+<<<<<<< HEAD:app/Http/Controllers/ImportData.php
+        DB::table('contacts')->insert($contact);
+        DB::table('import_data_table')->where('id',$id)->update(['is_import'=>1]);
+        
+        $new_data = DB::table('import_data_table')->where('MembershipID',$n[0]->MembershipID)->where('is_spouse',1)->get();
+        // dd($new_data);
+=======
         DB::table('contacts')->insert($contact);//insert data in contact
         DB::table('import_data_table')->where('id',$id)->update(['is_import'=>1]);//set import 1
         
@@ -93,6 +100,7 @@ class ImportContactController extends Controller
        //get the spouse data by parent membership ID
         $new_data = DB::table('import_data_table')->where('MembershipID',$f)->where('is_spouse',1)->get();
 
+>>>>>>> a6b3ba015e0386ba606ffd306ca3902d9342b20b:app/Http/Controllers/ImportContactController.php
         foreach($new_data AS $spouse_data){
             if(!empty($spouse_data->Name)){
             
