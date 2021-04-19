@@ -45,6 +45,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::get('/import-delete/{id}','ImportContactController@importDelete');
     Route::get('/import-import/{id}','ImportContactController@import');
     Route::get('/import-orderby/{id}','ImportContactController@orderBy');
+    Route::get('import/search','ImportContactController@search');
 
 
     Route::get('/view-event','EventController@index')->name('view_event');

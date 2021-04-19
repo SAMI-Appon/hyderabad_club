@@ -224,4 +224,20 @@ class ImportContactController extends Controller
     //     }
     //     return redirect('/import-data');
     // }
+
+    //search function
+    function search(Request $req){
+        
+        $data = $req->all();
+        
+        $details = DB::table('import_data_table')
+                        ->where('MembershipID', 'like', '%'.$data['search'].'%')
+                        ->orWhere('Name', 'like', '%'.$data['search'].'%')
+                        ->orWhere('MembershipType', 'like', '%'.$data['search'].'%')
+                        ->orWhere('CNICNO', 'like', '%'.$data['search'].'%')
+                        ->orWhere('MobileNo', 'like', '%'.$data['search'].'%')
+                        ->paginate('300');
+                                     
+        return view('import_data.import_data')->with(compact('details'));   
+    }
 }
